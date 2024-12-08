@@ -1,0 +1,81 @@
+.IndexPage {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    min-height: 100vh;
+    position: relative; /* Ensure relative positioning for absolute child */
+}
+
+main {
+    flex: 1; /* Use flex: 1 to allow main to grow and take up remaining space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    position: relative; /* Ensure relative positioning for absolute child */
+}
+
+.scrollableText {
+    height: 71vh;
+    font-size: 12px;
+    overflow-y: auto;
+    background-color: #ffffffd9; /* Semi-transparent white background */
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+    width: 1050px; /* Fixed width, adjust as needed */
+    margin: 0 auto; /* Centering the block horizontally if inside a wider container */
+    border: 1px solid rgba(0, 0, 0, 0.2); /* Light border */
+    border-radius: 30px;
+    padding: 15px;
+    position: relative; /* Ensure relative positioning for absolute child */
+
+    /* Hide scrollbar for WebKit browsers by default */
+    &::-webkit-scrollbar {
+        width: 7px;
+        background-color: transparent; /* Makes scrollbar background transparent */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent; /* Initially make thumb transparent */
+        border-radius: 10px; /* Rounded corners for the thumb */
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(145, 145, 145, 0.5); /* Visible on hover with transparency */
+    }
+
+    h3 {
+        text-align: justify;
+        text-align: center;
+    }
+
+    h2 {
+        text-align: center;
+    }
+}
+
+.sideNscroll {
+    display: flex;
+    position: relative; /* Ensure relative positioning for absolute child */
+}
+
+.pageUpButton {
+    position: relative;
+    top: 480px; /* Adjust as needed for desired distance from bottom */
+    right: 100px; /* Adjust as needed for desired distance from right */
+    padding: 5px 10px; /* Adjust padding for smaller size */
+    font-size: 12px; /* Adjust font size for smaller text */
+    background-color: #000000; /* Example background color */
+    color: white; /* Text color */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 1000; /* Ensure button is above other content */
+    width: 30px; /* Adjust width for smaller button */
+    height: 30px; /* Adjust height for smaller button */
+    line-height: 30px; /* Center text vertically */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}

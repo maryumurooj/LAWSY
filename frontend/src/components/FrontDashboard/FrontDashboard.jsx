@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./FrontDashboard.module.css";
 import { useAuth } from '../../services/AuthContext';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 
 
 const FrontDashboard = ({ onItemSelect, onZoom, onPrint, activeContent, judgmentData }) => {
@@ -16,6 +19,13 @@ const FrontDashboard = ({ onItemSelect, onZoom, onPrint, activeContent, judgment
   const [existingFolders, setExistingFolders] = useState([]);  
 
 const [url, setUrl] = useState("");  // For URL
+const [show, setShow] = useState(false);
+
+  const handleClose = () => {
+    navigate("/auth");
+  };
+  const handleShow = () => setShow(true);
+
 
 
   const items = [
@@ -36,19 +46,31 @@ const [url, setUrl] = useState("");  // For URL
 
   
   const handleClick = (key) => {
-    if (key === "plus" || key === "minus") { 
+    if (!user && (judgmentData) && (key!="headnotes")) {
+      handleShow(); // Redirect to login if not logged in
+      return;
+    }
+  
+    if (key === "plus" || key === "minus") {
       onZoom(key);
     } else if (key === "print") {
-      onPrint();
+      if (user) {onPrint();} else  handleShow();;
     } else if (key === "pad") {
-      navigate("/pad");
+      if (user) { navigate("/pad"); } else  handleShow();;
+     
     } else if (key === "bookmark") {
+      if (!user){
+        handleShow(); // Dont Open the modal
+       } else {
       setBookmarkModalOpen(true); // Open the modal
+
+    }
     } else {
       onItemSelect(key);
     }
     setActiveItem(key);
   };
+  
 
   const handleModalClose = () => {
     setBookmarkModalOpen(false);
@@ -205,6 +227,27 @@ const [url, setUrl] = useState("");  // For URL
         </div>
       
       )}
+
+<Modal show={show}
+        backdrop="static"
+        keyboard={false}
+        closeButton
+        centered
+        >
+        <Modal.Header closeButton={false}>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you need to be a User to Acesses this Feature!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Sign Up
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Login
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
     </div>
   );
 };

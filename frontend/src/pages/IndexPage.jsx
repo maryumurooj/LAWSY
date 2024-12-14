@@ -13,6 +13,9 @@ import NotesContent from "../components/NotesContent/NotesContent";
 import styles from "./IndexPage.module.css";
 import { useAuth } from './../services/AuthContext';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Alert } from "reactstrap";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 
 const IndexPage = () => {
@@ -37,6 +40,7 @@ const IndexPage = () => {
   const [currentJudgmentCitation, setCurrentJudgmentCitation] = useState('');
   const navigate = useNavigate(); // Initialize navigate function
 
+  
 
   // Adding state for results, error, and judgment count
   const [results, setResults] = useState([]);
@@ -58,12 +62,13 @@ const IndexPage = () => {
   };
 
   const handleContentChange = (content) => {
-    // Check if user is logged in and has an active subscription
     {
       setActiveContent(content);  // Set the selected content if conditions are met
     }
     // If conditions are not met, do nothing
   };
+  
+
   
   
   
@@ -73,12 +78,22 @@ const IndexPage = () => {
     return num + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
   };
 
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => {
+    navigate("/auth");
+  };
+  const handleShow = () => setShow(true);
+
   const handleSearchById = async (judgmentId) => {
     try {
       const response = await fetch(`http://localhost:3000/judgments/${judgmentId}`);
       const data = await response.json();
       console.log("Received data:", data); // Log the received data
       setJudgmentData(data);
+      if (!user) {
+        handleShow();
+      }
     } catch (error) {
       console.error('Error fetching judgment:', error);
     }
@@ -336,6 +351,27 @@ const handleClear = () => {
         </table>
       )}
 
+<Modal show={show}
+        backdrop="static"
+        keyboard={false}
+        closeButton
+        centered
+        >
+        <Modal.Header closeButton={false}>
+          <Modal.Title>Access Denied</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>To access this feature, please log in to your account!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Sign Up
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Login
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
       <div className={`${styles.sideNscroll} ${isFullScreen ? styles.fullScreen : ''}`}> {/* Apply full-screen class */}
         {!isFullScreen && (
         <SidePanel 
@@ -349,28 +385,30 @@ const handleClear = () => {
         />
 
 
-      )}<div 
-          className={`${styles.scrollableText} ${isFullScreen ? styles.fullScreenText : ''}`} 
-          ref={contentRef} 
-          style={{ fontSize: `${fontSize}px` }}
-        >          
-          {activeContent === "judgment" && <JudgmentContent judgmentData={results.length > 0 ? judgmentData : null} searchTerms={searchTerms} setReferredCitation={setReferredCitation} />}
-          {activeContent === "headnotes" && <HeadnotesContent judgmentData={results.length > 0 ? judgmentData : null} searchTerms={searchTerms} />}
-          {activeContent === "status" && <StatusContent judgmentData={results.length > 0 ? judgmentData : null}
-          setReferredCitation={setReferredCitation} />}
-          {activeContent === "equals" && <EqualsContent judgmentData={results.length > 0 ? judgmentData : null} searchTerms={searchTerms} />}
-          {activeContent === "cited" && <CitedContent judgmentData={results.length > 0 ? judgmentData : null} searchTerms={searchTerms} />}
-          {activeContent === "notes" && (
-  <NotesContent uid={user.uid} judgmentId={selectedRow?.judgmentId} />
-)}
-        </div>
-        {showPageUpButton && (
+      )}
+       
+      <div 
+      className={`${styles.scrollableText} ${isFullScreen ? styles.fullScreenText : ''}`} 
+      ref={contentRef} 
+      style={{ fontSize: `${fontSize}px`, filter: (!user & (results.length > 0)) ? 'blur(4px)' : 'none' }}
+    >
+      {activeContent === "judgment" && <JudgmentContent judgmentData={results.length > 0 ? judgmentData : null} searchTerms={searchTerms} setReferredCitation={setReferredCitation} />}
+      {activeContent === "headnotes" && <HeadnotesContent judgmentData={results.length > 0 ? judgmentData : null} searchTerms={searchTerms} />}
+      {activeContent === "status" && <StatusContent judgmentData={results.length > 0 ? judgmentData : null}
+      setReferredCitation={setReferredCitation} />}
+      {activeContent === "equals" && <EqualsContent judgmentData={results.length > 0 ? judgmentData : null} searchTerms={searchTerms} />}
+      {activeContent === "cited" && <CitedContent judgmentData={results.length > 0 ? judgmentData : null} searchTerms={searchTerms} />}
+      {activeContent === "notes" && (<NotesContent uid={user?.uid} judgmentId={selectedRow?.judgmentId}/>)}
+    </div>
+          {showPageUpButton && (
           <button className={styles.pageUpButton} onClick={handlePageUp}>
             ↑
           </button>
         )}
 
       </div>
+    
+      
       <RearDashboard results={results} onRowClick={handleRowClick} selectedRow={selectedRow} onSaveToPad={handleSaveToPad} judgmentCount={judgmentCount}  currentJudgmentCitation={currentJudgmentCitation}
         setCurrentJudgmentCitation={setCurrentJudgmentCitation} />
     </div>

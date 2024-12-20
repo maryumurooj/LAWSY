@@ -1,0 +1,19 @@
+.scrollableText {
+    
+    padding: 20px;
+    height: 100vh;
+}
+
+.centered {
+    text-align: center;
+}
+
+.notesArea {
+    width: 60vw;
+    height: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}

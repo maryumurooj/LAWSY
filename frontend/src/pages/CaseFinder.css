@@ -1,0 +1,64 @@
+
+.IndexPage {
+    display: flex;
+    flex-direction: column;
+    width: 100vw; /* Correction from 'widows' to 'width' */
+    min-height: 100vh; /* Ensures the App container fills the viewport height */
+    position: relative; /* Required for absolute positioning of the footer */
+}
+
+main {
+    flex: 1; /* Ensures main content expands to fill available space */
+    padding: 0; /* Zero padding around the content */
+    margin-bottom: 56px; /* Reserves space for the footer */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
+    overflow: hidden; /* Prevents overflow */
+}
+    .scrollableText {
+        height: 325px;
+        overflow-y: auto;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        width: 900px; /* Fixed width, adjust as needed */
+        margin: 0 auto; /* Centering the block horizontally if inside a wider container */
+        margin-top: -20px; /* Move up the text block */
+        margin-right:160px;
+        margin-left:280px;
+
+    /* Hide scrollbar for WebKit browsers by default */
+    &::-webkit-scrollbar {
+        width: 7px;
+        background-color: transparent; /* Makes scrollbar background transparent */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent; /* Initially make thumb transparent */
+        border-radius: 10px; /* Rounded corners for the thumb */
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+        background-color: rgb(145, 145, 145, 0.5); /* Visible on hover with transparency */
+    }
+
+    .scrollableText::-webkit-scrollbar {
+        width: 10px; /* Width of the scrollbar */
+    }
+
+    .scrollableText::-webkit-scrollbar-thumb {
+        background-color: rgb(173, 173, 173, 0.5); /* Color of the scrollbar thumb */
+        border-radius: 5px; /* Rounded corners for the scrollbar thumb */
+    }
+
+    .scrollableText::-webkit-scrollbar-track {
+        background-color: transparent; /* Color of the scrollbar track */
+    }
+        h3 {
+            text-align: center;
+        }
+
+}

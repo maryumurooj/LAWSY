@@ -1,0 +1,6 @@
+.scrollableText {
+    height: 71vh;
+    overflow-y: auto;
+    user-select: none;
+}
+

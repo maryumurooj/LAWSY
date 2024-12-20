@@ -1,0 +1,38 @@
+.tableContainer{
+  color: black;
+  display:flex;
+  justify-content: space-around;
+  padding:30px;
+  padding-top:0px;
+}
+.table{
+  
+  background-color: whitesmoke;
+  border: 1px solid black;
+  width:85vw;
+  
+}
+
+.tr{
+   border: 1.5px solid black;
+
+}
+th{
+  border: 1px solid black;
+  background-color:lightgrey;
+  font-size:20px;
+  padding: 20px;
+}
+.table{
+  border: 1px solid black;
+  border-collapse: collapse;
+   
+}
+
+/* Define styles for td elements */
+.td{
+  color: black ; /* Text color */
+  padding: 20px;/* Padding */
+  border: 1px solid black; /* Border */
+  font-size:14px;
+}

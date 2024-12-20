@@ -1,0 +1,78 @@
+      {/* <div className={styles.LeftCol}>
+        <div className={styles.box1}>
+           <p>
+              Our platform provides lawyers with detailed case information,
+              accessible through various user-friendly search methods. Start
+              your journey with a 14-day free trial to explore all features.
+              After the trial, you can continue accessing the information you
+              need by selecting one of our affordable subscription plans.{" "}
+            </p>
+            <button className={styles.subbutton}>Choose your Plan</button>
+        </div>
+
+        <div className={styles.box45}>
+        <h2>Latest Judgments</h2>
+          <div className={styles.judgmentsList}>
+            {judgments.map((judgment) => (
+              <div key={judgment.judgmentId} className={styles.judgment}>
+                <h3>{judgment.newCitation || judgment.judgmentCitation}</h3>
+                <p>{judgment.judgmentJudges}</p>
+                <span>{judgment.formattedDOJ}</span>
+              </div>
+            ))}
+          </div>
+          <div className={styles.box4}>
+            
+          </div>
+          <div className={styles.box5}>
+           
+          </div>
+        </div>
+      </div>
+      <div className={styles.RightCol}>
+        <div className={styles.box2}>
+        <div className={styles.bookContainer}>
+              <button
+                className={`${styles.arrowButton} ${styles.leftArrow}`}
+                onClick={handlePrev}
+              >
+                &#129168; {/* Left Arrow */}
+              </button>
+              <div className={styles.book}>
+                <img
+                  src={books[currentbook].src}
+                  alt={books[currentbook].title}
+                  className={styles.bookImage}
+                />
+                <div className={styles.overlay}>
+                  <h4 className={styles.bookTitle}>
+                    {books[currentbook].title}
+                  </h4>
+                  <p className={styles.bookPrice}>{books[currentbook].price}</p>
+                </div>
+              </div>
+              <button
+                className={`${styles.arrowButton} ${styles.rightArrow}`}
+                onClick={handleNext}
+              >
+                &#129170; {/* Right Arrow */}
+              </button>
+            </div>
+        </div>
+      </div> */}
+
+
+
+      <h2>Our Editions</h2>
+  <div className={styles.booksContainer}>
+    {books.map((book, index) => (
+      <div key={index} className={styles.bookCard}>
+        <img src={book.src} alt={book.alt} className={styles.bookImage} />
+        <div className={styles.bookDetails}>
+          <h3 className={styles.bookTitle}>{book.title}</h3>
+          <p className={styles.bookAuthor}>{book.author}</p>
+          <p className={styles.bookEdition}>{book.edition}</p>
+        </div>
+      </div>
+    ))}
+  </div>

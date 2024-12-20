@@ -1,0 +1,57 @@
+.billingTableContainer {
+    background-color: #f9f9f9;
+  }
+  
+  .filterContainer {
+    margin-bottom: 20px;
+  }
+  
+  .inputField {
+    height: 40px; /* Increased height */
+    width: 150px; /* Increased width */
+    font-size: 15px; /* Font size */
+    border: 1px solid #000; /* Border style */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+    padding: 10px; /* Padding inside the input/select */
+    margin: 10px 5px; /* Margin for spacing between inputs */
+  }
+  
+  .billingTable {
+    width: 100%; /* Set the table width to 100% to fit the screen */
+    border-collapse: collapse; /* Remove space between table cells */
+    margin-top: 20px; /* Space above table */
+    font-family: 'Arial', sans-serif; /* Use a modern sans-serif font */
+  }
+  
+  .billingTable th,
+  .billingTable td {
+    border: 1px solid #4d4d4d; /* Dark gray border for a softer contrast */
+    padding: 10px; /* Slightly increased padding for better spacing */
+    text-align: left; /* Align text to the left */
+    font-size: 14px; /* Font size for table cells */
+  }
+  
+  .billingTable th {
+    background-color: #6d6d6d; /* Dark gray background for header */
+    color: #ffffff; /* White header text color */
+    font-size: 15px; /* Slightly larger font size for header */
+    text-transform: uppercase; /* Uppercase for a modern look */
+  }
+  
+  .billingTable tbody tr {
+    transition: background-color 0.3s; /* Smooth background transition */
+  }
+  
+  .billingTable tbody tr {
+    background-color: #f9f9f9; /* Light gray background for table rows */
+  }
+  
+  .billingTable tbody tr:hover {
+    background-color: #d1d1d1; /* Medium gray highlight on hover */
+  }
+  
+  .billingTable tbody tr:nth-child(even) {
+    background-color: #eaeaea; /* Slightly darker gray for even rows */
+  }
+  

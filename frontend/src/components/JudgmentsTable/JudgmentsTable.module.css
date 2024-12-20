@@ -1,0 +1,36 @@
+.customTh,
+.customTd {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.customTh {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    background-color: #f0f0f0; /* Background color for sticky row */
+    z-index: 2; /* Ensure it's above other rows */
+}
+
+.customTr {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.customTr:hover {
+    background-color: #a4a4a4;
+    transform: scale(1.01);
+}
+
+.customTr.clicked {
+    background-color: #6c757d;
+}
+
+.customTd {
+    color: rgb(0, 0, 0);
+    border: 1px solid black;
+    padding: 10px; /* Adjust padding as per your design */
+    font-size: 12px;
+}

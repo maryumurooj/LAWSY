@@ -1,0 +1,19 @@
+/* StatusContent.module.css */
+.scrollableText {
+    overflow-y: auto;
+  }
+  
+  .statusItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Adjust spacing between items as needed */
+  }
+  
+  .statusItem h3 {
+    margin-right: 20px; /* Adjust spacing between citation and status as needed */
+  }
+  
+  .highlight {
+    background-color: yellow; /* Adjust highlight color as needed */
+  }
+  

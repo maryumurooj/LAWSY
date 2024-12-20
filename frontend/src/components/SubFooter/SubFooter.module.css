@@ -1,0 +1,55 @@
+.subFooterFrame {
+  align-items: center;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 5px; /* Reduced vertical padding */
+  box-sizing: border-box;
+  position: relative; /* Change to absolute */
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.horizontalLine {
+  width: 90%;
+  border: none;
+  height: 1px;
+  background-color: #fff;
+  margin-top: 0px; /* Reduce margin above the line */
+  margin-bottom: 5px; /* Reduce margin below the line */
+}
+
+.contentContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.textContent, .contactInfo {
+  display: flex;
+  align-items: center;
+  font-family: Poppins, sans-serif;
+  font-size: 12px; /* Optionally reduce the font size if needed */
+}
+
+.icon {
+  width: 12px; /* Reduce icon size to decrease height */
+  margin-right: 8px; /* Adjust spacing between icon and text */
+}
+
+.text {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .subFooterFrame{
+    width: 100vw;
+  }
+  .contactInfo{
+    display: none;
+  }
+}

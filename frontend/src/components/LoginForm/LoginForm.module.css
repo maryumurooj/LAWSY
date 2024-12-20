@@ -1,0 +1,104 @@
+.loginForm {
+  background-color: #000;
+  padding: 40px;
+  color: #fff;
+  width: 100%;
+  margin-left:10vw;
+ 
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.inputContainer {
+  margin-bottom: 20px;
+}
+
+.inputContainer label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.inputContainer input {
+  width: 100%;
+  padding: 20px;
+  outline: none;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 35px;
+  font-size: 16px;
+  transition: .5s;
+}
+
+.inputContainer input:focus{
+  background-color: #545454;
+  color:white;
+  box-shadow: 0 0 15px rgba(0,0,0,.2);
+}
+
+.loginBtn {
+  width: 100%;
+  padding: 10px;
+
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+
+  height: 45px;
+  border: none;
+ 
+  background-color: #dc3a04;
+  font-size:18px;
+  
+  font-weight:700;
+  color:white; 
+  
+}
+
+.loginBtn:hover {
+  background-color: #0056b3;
+}
+
+.or {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.googleBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.googleBtn img {
+  margin-right: 10px;
+}
+
+.signup {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup a:hover {
+  text-decoration: underline;
+}
+
+.icon{
+  width: 20px;
+  height: inherit;
+}

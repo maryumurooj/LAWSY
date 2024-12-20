@@ -1,0 +1,96 @@
+/* Container for the entire dashboard */
+.dashboardContainer {
+    display: flex;
+  
+    background-color: black; /* Set the background color of the entire page to black */
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Sidebar styling */
+  .sidebar {
+    width: 200px;
+    background-color: black; /* Sidebar background is black */
+    color: white;
+    padding: 20px;
+  }
+  
+  .sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #000000;
+    cursor: pointer;
+    text-align: center;
+    font-size: 20px;
+    font-weight:500;
+    font-family: 'Abhaya Libre';
+  }
+  
+  .sidebar ul li:hover {
+    background-color: #636363;
+    border-radius: 20px;
+  }
+  
+  /* Active tab styling */
+  .sidebar ul li.active {
+    background-color: #ffffff;
+    border-radius: 20px;
+    color: black;
+  }
+  
+  /* Main content area */
+  .mainContent {
+    flex-grow: 1;
+    padding: 1px;
+    background-color: black; /* Main content background is black */
+    color: white; /* Set the text color to white for contrast */
+    overflow-y: scroll;
+  }
+  
+  /* Admin section header */
+  .admin {
+    padding-bottom: 55px;
+    color: white;
+    font-size: 30px;
+  
+  }
+  
+  .admin div {
+    font-size: 30px;
+    font-weight: 20;
+    font-family: 'Abhaya Libre';
+    text-align: center; /* Center align the text */
+    color: #ffffff; /* Change to your desired color (example: a shade of orange) */
+  }
+  
+  
+  /* Form container */
+  .formContainer {
+    position: relative;
+    width: 6000vw; /* Extra-wide container to accommodate future forms */
+    height: 95vh;
+    margin: 10px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    max-height: 70vh;
+    overflow-y: scroll;  
+    border: 1px solid #d14900;
+    box-shadow: 0px 0px 10px #d14900;
+  }
+  
+  /* Rest of your existing styles */
+  

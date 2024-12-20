@@ -1,0 +1,116 @@
+/* Header.module.css */
+.headerComponent {
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+  padding: 10px 15px;
+  width: 100%;
+  justify-content: space-between;
+  gap: 40px;
+  z-index: 100;
+  min-height: 10vh;
+}
+
+.titlelogo {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.logoImage {
+  height: 60px;
+}
+
+.titleImage {
+  height: 40px;
+}
+
+.headerComponentInner {
+  width: 100%;
+}
+
+.loginButton {
+  padding: 7px 20px;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 20px;
+  font-size: 15px;
+  font-family: 'Abhaya Libre', serif;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 1px;
+  transition: transform 0.2s;
+}
+
+.loginButton:hover {
+  color: red;
+}
+
+.loginButton:active {
+  transform: scale(0.95);
+}
+
+.profilePicture {
+  width: 50px;
+  border-radius: 50%;
+}
+
+
+/* Existing styles... */
+
+/* Add these classes for conditional display */
+.desktopOnly {
+  display: block; /* Default to display on larger screens */
+}
+
+.mobileOnly {
+  display: none; /* Hide by default on smaller screens */
+}
+
+/* Media Query to toggle display based on screen size */
+@media (max-width: 768px) { /* Adjust the breakpoint as needed */
+  .desktopOnly {
+    display: none; /* Hide Navbar on smaller screens */
+  }
+
+  .mobileOnly {
+    display: block; /* Show Ham component on smaller screens */
+  }
+
+  .profilebutton{
+    display: none;
+  }
+
+  .Ham{
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .headerComponentInner{
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .headerComponent{
+    width: 100vw;
+    .titlelogo {
+      display: flex;
+      
+      align-items: center;
+    }
+    
+    .logoImage {
+      height: 50px;
+    }
+    
+    .titleImage {
+      display: none;
+    }
+  }
+}
+
+/* Optional: If you want to make the Ham component full width on mobile */

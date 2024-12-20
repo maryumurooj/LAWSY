@@ -1,0 +1,90 @@
+.Popup {
+    border: 2px solid red;
+    
+  }
+  .overlay {
+    border: 2px solid blue;
+  }
+body.active-Popup {
+    overflow-y: hidden;
+}
+
+.btn-Popup {
+    padding: 10px 20px;
+    display: block;
+    margin: 100px auto 0;
+    font-size: 18px;
+}
+
+.Popup, .overlay {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    z-index: 3;
+}
+
+.overlay {
+    background: rgba(49,49,49,0.8);
+    backdrop-filter: blur(5px);
+    
+}
+.Popupcontent {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1.4;
+    background: #f1f1f1;
+    padding: 14px 28px;
+    border-radius: 3px;
+    max-width: 600px;
+    min-width: 300px;
+    z-index: 4;
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;}
+
+.close-Popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 7px;
+}
+
+.footer{
+    display: flex;
+    flex-direction: column;
+
+    
+}
+
+.button{
+    background-color: transparent;
+    border-radius: 10px;
+    font-size: 15px;
+    padding: 10px 13px;
+    margin: 20px;
+
+    
+}
+.button:hover{
+    color: #f1f1f1;
+    background-color: rgb(0, 0, 0);
+}
+
+.sbutton{
+    border: none;
+    background-color: transparent;
+    margin-bottom: 20px;
+}
+.sbutton:hover{
+    color: red;
+}

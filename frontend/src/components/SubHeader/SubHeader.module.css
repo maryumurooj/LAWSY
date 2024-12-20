@@ -1,0 +1,51 @@
+.frame {
+  background-color: #d9d9d9;
+  display: flex;
+  justify-content: space-between; /* Space items evenly across */
+  align-items: center;
+  padding: 5px 30px;
+  color: #000;
+}
+
+.textBlock {
+  display: flex;
+  gap: 20px; /* Adjusted gap between items */
+  align-items: center;
+  flex-grow: 1; /* Expand to fill available space */
+}
+
+.citation {
+  font-size: 13px;
+  font-family: 'Abhaya Libre ExtraBold', sans-serif;
+  font-weight: bold;
+}
+
+.caseTitle {
+  font-size: 15px;
+  font-family: 'Abhaya Libre ExtraBold', sans-serif;
+  font-weight: bold;
+  text-align: center; /* Center text */
+  flex-grow: 1; /* Take remaining space */
+}
+
+.fullScreenButton {
+  background: transparent;
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 2px 8px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  transition: all 0.3s ease; /* Smooth transition for hover and click effects */
+}
+
+.fullScreenButton:hover {
+  background: #000; /* Dark background on hover */
+  color: #fff; /* White text color on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.fullScreenButton:active {
+  background: #333; /* Slightly lighter black on click */
+  transform: scale(0.98); /* Slightly shrink the button on click */
+}

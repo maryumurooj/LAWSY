@@ -1,0 +1,71 @@
+/* src/components/SubscriptionTier.module.css */
+
+/* Container for the tier selection */
+.subscription-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    padding: 20px; /* Padding around the container */
+  }
+  
+  /* Subscription options layout */
+  .subscription-options {
+    display: flex;
+    justify-content: space-around; /* Distributes space evenly between tiles */
+    width: 100%; /* Full width */
+    margin-bottom: 20px; /* Margin below subscription options */
+  }
+  
+  /* Individual tier tile styles */
+  .tier-tile {
+    background-color: #fff; /* White background */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px; /* Inner padding */
+    text-align: center; /* Centered text */
+    width: 250px; /* Fixed width for the tiles */
+    transition: transform 0.3s, box-shadow 0.3s; /* Animation for hover effect */
+    cursor: pointer; /* Pointer cursor for hover */
+  }
+  
+  /* Hover effect for tiles */
+  .tier-tile:hover {
+    transform: translateY(-5px); /* Slightly raise the tile */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Increase shadow */
+  }
+  
+  /* Selected tile style */
+  .selected {
+    border: 2px solid #dc3a04; /* Highlight border for selected tile */
+  }
+  
+  /* Title styles */
+  .tile-content h2 {
+    font-size: 1.5rem; /* Title font size */
+    margin: 0 0 10px; /* Bottom margin */
+    color: #333; /* Dark text color */
+  }
+  
+  /* Description styles */
+  .tile-content p {
+    font-size: 1rem; /* Description font size */
+    color: #777; /* Lighter text color */
+  }
+  
+  /* Submit button styles */
+  button {
+    background-color: #dc3a04; /* Button background */
+    color: #fff; /* Button text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for button */
+    cursor: pointer; /* Pointer on hover */
+    font-size: 1rem; /* Button font size */
+    transition: background-color 0.3s; /* Button hover transition */
+  }
+  
+  /* Button hover effect */
+  button:hover {
+    background-color: #c72a00; /* Darker shade on hover */
+  }
+  

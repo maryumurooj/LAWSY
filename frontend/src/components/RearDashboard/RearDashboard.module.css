@@ -1,0 +1,180 @@
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: auto;
+  font-size: 11px;
+  color: #000;
+  font-weight: 400;
+  overflow: hidden;
+  margin-left: 120px;
+}
+
+.header {
+  width: 69vw;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10px;
+  margin-top: 8vh;
+  z-index: 1; /* Ensure the header is on top */
+}
+
+.dateLabel {
+  font-family: 'Abhaya Libre'; /* Abhaya Libre font */
+  margin: auto 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  font-size: 17px; /* Reduced font size */
+  padding: 5px 5px; /* Reduced padding */
+}
+
+.toLabel {
+  font-family: 'Abhaya Libre'; /* Abhaya Libre font */
+  margin: auto 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  font-size: 17px; /* Reduced font size */
+  padding: 5px 5px; /* Reduced padding */
+}
+
+.clearButton{
+font-family: 'Abhaya Libre'; /* Abhaya Libre font */
+margin: auto 0;
+background: none;
+border: none;
+cursor: pointer;
+color: #333;
+font-size: 17px; /* Reduced font size */
+padding: 5px 5px; /* Reduced padding */
+}
+
+
+.allInput {
+  font-family: 'Abhaya Libre';
+  font-size: 15px;
+  margin-right: 50px;
+}
+
+.dateInput {
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 1);
+  width: 110px;
+  height: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  box-sizing: border-box;
+  background-color: #fff;
+  z-index: 2; /* Ensure inputs are on top */
+  text-align: center;
+  padding: 5px;
+}
+
+.dateInput:hover {
+  background-color: #f0f0f0;
+}
+
+.dateRangeSelector {
+  display: flex;
+  align-items: center;
+}
+
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2px; /* Reduced margin-top */
+  align-items: center;
+  justify-content: space-around;
+  width: 65vw;
+}
+
+.paginationButton,
+.prevCaseButton,
+.searchButton,
+.padButton,
+.showButton {
+  font-family: 'Abhaya Libre'; /* Abhaya Libre font */
+  margin: auto 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  font-size: 17px; /* Reduced font size */
+  padding: 5px 5px; /* Reduced padding */
+}
+
+.searchblock {
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0);
+  width: 120px; /* Reduced width */
+  height: 18px; /* Reduced height */
+}
+
+.searchBar {
+  height: fit-content;
+  width: fit-content;
+}
+
+.allSelector {
+  display: flex;
+  gap: 40px; /* Reduced gap */
+}
+
+.allDropdown {
+  font-family: 'Abhaya Libre';
+  font-size: 12px;
+  border-radius: 10px;
+  /* Adjust as needed */
+  border: 1px solid #000000;
+  /* Change to your desired border color */
+  width: 160px;
+  height: 20px;
+  padding-left: 4px;
+  margin-top: 0.6vh;
+}
+
+.caseInfo {
+  border-radius: 8px; /* Reduced border-radius */
+  border: 1px solid rgba(0, 0, 0, 1);
+  width: 200px; /* Reduced width */
+  height: 18px; /* Reduced height */
+  padding: 2px; /* Adjust padding */
+}
+
+.paginationInfo {
+  border-radius: 8px; /* Reduced border-radius */
+  border: 1px solid rgba(0, 0, 0, 1);
+  width: auto; /* Adjust width */
+  height: auto; /* Adjust height */
+  padding: 3px; /* Adjust padding */
+}
+
+.rectangle {
+  display: flex;
+  box-sizing: border-box; /* Ensures padding and border are included in the width/height */
+  position: absolute; /* Positions the rectangle absolutely within a relative container */
+  width: 65vw; /* Specific width */
+  height: 50px; /* Specific height */
+  background-color: transparent; /* No fill color */
+  border: 1px solid #E34A3E; /* Apply border color and width */
+  border-bottom: none; /* Removes the bottom border */
+  border-radius: 30px; /* Specific border radius */
+  border-bottom-left-radius: 0; /* Removes the curve on the top-left corner */
+  border-bottom-right-radius: 0; /* Removes the curve on the top-right corner */
+  top: 50px; /* Position from the bottom within the container */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust horizontal position to truly center based on width */
+  z-index: -1;
+}
+
+
+.table {
+  display: flex;
+  justify-content: center;
+  height: 200px;
+  overflow-y: scroll;
+}

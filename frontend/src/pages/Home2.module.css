@@ -1,322 +1,695 @@
 .home {
+  scroll-snap-type: y mandatory;
+  height: 84.6vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-image: url("../assets/bookcase.jpg");
+  background-size: cover;
+  position: relative; /* Hide scrollbar for WebKit browsers by default */
+  &::-webkit-scrollbar {
+    width: 7px;
+    background-color: transparent; /* Makes scrollbar background transparent */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Initially make thumb transparent */
+    border-radius: 10px; /* Rounded corners for the thumb */
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(
+      145,
+      145,
+      145,
+      0.5
+    ); /* Visible on hover with transparency */
+  }
+}
+
+.reducedWelcome {
+  font-size: 30px; /* Adjust the font size as needed */
+  position: fixed; /* Keep the welcome phrase fixed at the top */
+  top: 0; /* Stick to the top of the viewport */
+  left: 0; /* Align to the left (adjust as needed) */
+  width: 100%; /* Take full width (adjust as needed) */
+  text-align: center; /* Center the text (adjust as needed) */
+  z-index: 1000; /* Ensure it's on top of other elements */
+  background-color: #fff; /* Add a background color to maintain readability (optional) */
+  padding: 10px; /* Add some padding for better readability (optional) */
+}
+
+.layer1 {
+  position: absolute;
+  background: linear-gradient(to bottom, #000000, #00000051, #f8e8c500);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.layer2 {
+  position: absolute;
+  background: linear-gradient(to top, #000000, #000000, #f8e8c500);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+.layer3 {
+  position: absolute;
+  background: linear-gradient(to right, #000000, #000000, #c28a1200);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 84.6;
+  z-index: -1;
+}
+.sectionscroll {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.section1 {
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  height: 84.5vh;
+  position: relative;
+  transition: transform 0.6s ease-in-out;
+  color: whitesmoke;
+}
+.Welcome {
+  text-align: center;
+  font-weight: 900;
+  font-size: 60px;
+  padding-top: 20px;
+  letter-spacing: 5px;
+
+  transition: opacity 1s ease, transform 1s ease;
+
+  animation: fadeInAnimation ease 3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+      font-size: 50px;
+  }
+
+  100% {
+      font-size: 65px;
+  }
+}
+.para {
+  text-align: center;
+  padding: 0;
+}
+.section2 {
+  padding: 20px;
+  height: 84.5vh;
+  position: relative;
+  transition: transform 0.6s ease-in-out;
+  color: whitesmoke;
+  z-index: 2;
+
+  .content{
     display: flex;
     gap: 10px;
     padding: 20px;
-    background-color: #ffffff;
-    div{
-      transition: transform 0.2s ease, max-height 0.3s ease;
-    }
-
-    div:hover{
-      transform: scale(1.01);
-
-    }
+    position: relative;
+    transition: transform 0.6s ease-in-out;
+    color: whitesmoke;
+    z-index: 2;
   }
-  
-  .LeftCol {
-    display: flex;
-    flex-direction: column;
-    width: 40vw;
-    gap: 10px;
+} /* Section 1 sliding out animation */
+.slideOut {
+  transform: translateX(-100%);
+} /* Left and Right Columns */
+.LeftCol {
+  display: flex;
+  flex-direction: column;
+  width: 60vw;
+  height: 100%;
+  gap: 10px;
+}
+.RightCol {
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+  height: 100%;
+  gap: 10px;
+} /* Boxes */
+.box1,
+.box2,
+.box3,
+.box4 {
+  transition: transform 0.2s ease, max-height 0.3s ease;
+  border-radius: 2px;
+  opacity: 0;
+  transform: translateY(500px); /* Start slightly below */
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.box2 {
+  max-height: 42vh;
+  border-radius: 20px;
+}
+.image {
+  border-radius: 20px;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 42vh;
+  object-fit: cover;
+  width: 40vw;
+}
+.homeSlider {
+  min-height: 55vh;
+  height: 100vh;
+  border: 1px black;
+}
+.box3 {
+  max-height: 65vh;
+  background: rgba(255, 255, 255, 0.23);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  border: 1px solid rgba(255, 255, 255, 1);
+  h2 {
+    padding: 10px;
+    position: sticky;
+    font-weight: 900;
+    text-align: center;
   }
-
-  .RightCol {
-    width: 60vw;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .box1 {
-   
-    border-radius: 20px;
-    background-color: transparent;
-    color: #ffffff;
-    position: relative; /* Ensure label positioning works */
-    height: 35vh;
-
-    .image {
-      filter: brightness(0.5);
-      width: 100%;
-      border-radius: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 35vh;
-
-      object-fit: cover;
-    }
-    .image:hover{
-      filter: brightness(0.7);
-    }
-  }
-  
-  .box2 {
-    flex: 1;
-    border-radius: 20px;
-    background-color: #000000;
-    color: #ffffff;
-    padding: 0px 20px;
-    overflow-x: scroll;
-    position: relative; /* For label positioning */
-    max-height: 40vh;
-    margin-bottom: 10px;
-    transition: transform 0.2s ease, max-height 0.3s ease;
-
-    &::-webkit-scrollbar {
-        width: 7px;
-        background-color: transparent; /* Makes scrollbar background transparent */
-      }
-    
-      &::-webkit-scrollbar-thumb {
-        background-color: transparent; /* Initially make thumb transparent */
-        border-radius: 10px; /* Rounded corners for the thumb */
-      }
-    
-      &:hover::-webkit-scrollbar-thumb {
-        background-color: rgb(145, 145, 145, 0.5); /* Visible on hover with transparency */
-      }
-    
-      &::-webkit-scrollbar {
-        width: 10px; /* Width of the scrollbar */
-      }
-    
-      &::-webkit-scrollbar-thumb {
-        border-radius: 5px; /* Rounded corners for the scrollbar thumb */
-      }
-    
-      &::-webkit-scrollbar-track {
-        background-color: transparent; /* Color of the scrollbar track */
-      }
-      h2{
-        margin-left: 10px;
-      }
-  
-    }
-
-    .box2:hover{
-      transform: scale(1.01);
-      color: rgba(255, 255, 255, 0.79);
-     
-
-    }
-  
-  .bottomRow {
-    display: flex;
-    gap: 20px;
-  }
-  
-  
-  .box5 {
-    flex: 1;
-    border-radius: 20px;
-    padding: 20px;
-  }
-
-  .box4, .box6 {
-    flex: 1;
-    border-radius: 20px;
-   }
-  
-  
-  .box6 {
-   
-  max-height:12rem;
-   position: relative;
-
-    iframe{
-      position: relative;
-
-      filter: brightness(0.8);
-      transition: transform 0.2s ease, max-height 0.3s ease;
-
-    }
-   
-  }
-  .box6:hover{
-   p{
-    color: transparent;
-    text-shadow: none;
-   } 
-            iframe{
-              filter: brightness(1);
-              transform: scale(1.01);
-            }
-  }
-
-
- 
-  
   .judgmentsList {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-  }
-  
-  .judgment {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 5px 10px;
-    border-radius: 10px;
-    color: #ffffff;
-    border-bottom:1px solid white ;
-
-    transition: transform 0.2s ease, max-height 0.3s ease;
-
-    p{
-      padding: 0px;
-      margin: 0%;
+    max-height: 55vh;
+    color: rgb(255, 255, 255);
+    overflow-y: scroll;
+    overflow-x: hidden; /* Hide scrollbar for WebKit browsers by default */
+    &::-webkit-scrollbar {
+      width: 7px;
+      background-color: transparent; /* Makes scrollbar background transparent */
     }
-    h3{
-      padding: 0%;
-      margin: 0%;
-
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent; /* Initially make thumb transparent */
+      border-radius: 10px; /* Rounded corners for the thumb */
+    }
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: rgba(
+        145,
+        145,
+        145,
+        0.5
+      ); /* Visible on hover with transparency */
+    }
+    .citation {
+      font-size: larger;
+      font-weight: bolder;
+    }
+    .parties {
+      font-weight: bolder;
+    }
+    .judgment {
+      padding: 10px;
+      border: 0.2px solid rgba(0, 0, 0, 0.122);
+      border-right: none;
+      max-height: min-content;
+      transition: transform 0.2s ease, max-height 0.3s ease;
+    }
+    .judgment:hover {
+      color: rgb(218, 182, 182);
+      box-shadow: inset 0px 0px 15px rgba(255, 255, 255, 0.195);
+      transform: scale(1.005);
+      border: none;
     }
   }
+}
+/* Marquee container styling */
+.marqueecontainer {
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+  background-color: #00000000;
+  color: #fff;
+  z-index: 50000;
+}
 
-  .judgment:hover{
-    color: red;
-    transform: scale(1.01);
-      box-shadow: 2px 2px rgba(255, 255, 255, 0.433);
-  
+/* Marquee animation */
+.marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll 10s linear infinite;
+  z-index: 50000;
 
-  }
-  
-  /* Label styling */
-  .label {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: rgba(255, 255, 255, 0.033);
-    color: #ffffff;
-    padding: 5px 10px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 25px;
-    z-index: 50;
-  }
-  
-  .box45{
-    display: flex;
-    flex-direction: row;
-    gap:15px;
-    transform: none;
-    transition: none;
-  }
+}
 
-  .box45:hover{
-    transform: none;
-    transition: none;
-  }
-  .box4 {
-    max-width: 10rem;
-    background-color: #ffffff;
-    color: #000000;
-  }
-  
-  .box5 {
+.marquee span {
+  padding-left: 100%; /* Start from off-screen */
+  display: inline-block;
+}
 
-    max-width: 25rem;
-    border: 2px solid #ff0000;
+/* Scrolling effect */
+@keyframes scroll {
+  0% {
+    transform: translateX(70%);
+  }
+  100% {
+    transform: translateX(-200%);
+  }
+}
 
-    
-
-  }
-  .subbutton{
-    border-radius: 10px;
-    padding: 10px;
-    border: none;
-    background-color: #ff0000;
-    color: #ffffff;
-             float: right
-
-  }
-  .subbutton:hover{
-    color: #353535;
-    background: #ffffff;
-box-shadow: inset 2px 2px 10px #c9c9c9,
-            inset -2px -2px 10px #ffffff;
-            cursor: pointer;
-  }
-
-  
-
-  .box4 {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-  
-  .bookContainer {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .book {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .bookImage {
-    width: 100%;
-    height: 100%;
-    filter: brightness(0.7);
-    object-fit: cover; /* Ensures the image covers the box */
+.box4 {
+  filter: opacity(0.8);
+  iframe{
     border-radius: 20px;
-  
+
   }
-  .bookImage:hover{
-    filter: brightness(1);
   }
-  
-  .overlay {
-    position: absolute;
-    bottom: 20px; /* Adjust based on your design */
-    left: 50%;
-    transform: translateX(-50%);
+.box1:hover,
+.box2:hover,
+.box3:hover,
+.box4:hover {
+  transform: scale(1.005);
+  filter: brightness(1.5);
+  box-shadow: 0px 0px 20px rgba(136, 135, 135, 0.158);
+  border-radius: 16px;
+  transform: translate(2px);
+  img {
+    filter: brightness(0.9);
+  }
+}
+.box4:hover {
+  filter: brightness(1);
+}
+.judgment {
+  display: flex;
+  flex-direction: column;
+  .topline {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+  }
+  .bottomline {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+  }
+} /* Hidden state for boxes */ /* Default hidden state */
+
+.Welcome:hover{
+  transform: translate(2px) scale(1.05);
+  cursor: progress;
+  text-shadow: 2px 2px 10px rgba(209, 160, 68, 0.364);
+}
+
+.box {
+  opacity: 0;
+  transform: translateY(50px); /* Start slightly below */
+  transition: opacity 1s ease, transform 2s ease;
+} /* Visible state when boxVisible is true */
+.boxVisible {
+  opacity: 1;
+  transform: translateY(0); /* Move to normal position */
+}
+.section3 {
+  display: flex;
+  gap: 10px;
+  padding: 60px;
+  min-height: 84.5vh;
+  position: relative;
+  transition: transform 2s ease-in-out;
+  color: whitesmoke;
+  z-index: 2;
+}
+.box5 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60vw;
+  filter: opacity(0.9);
+  transition: transform 0.2s ease, max-height 0.3s ease;
+  border-radius: 2px;
+  padding: 30px;
+  text-align: center;
+  h2 {
+    font-weight: 900;
+    font-size: 70px;
+  }
+  ul {
+    text-align: left;
+  } /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.23);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  border: 1px solid rgba(255, 255, 255, 1);
+}
+.box6:hover,
+.box5:hover {
+  transform: scale(1.005);
+  filter: brightness(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.389);
+  box-shadow: 0px 0px 20px rgba(136, 135, 135, 0.158);
+  border-radius: 16px;
+  transform: translate(2px);
+  img {
+    filter: brightness(0.5);
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.outtop {
+  animation: rotate 20s linear infinite;
+  transform-origin: 13px 25px;
+}
+.intop {
+  animation: rotate 10s linear infinite;
+  transform-origin: 13px 25px;
+}
+.outbottom {
+  animation: rotate 25s linear infinite;
+  transform-origin: 84px 93px;
+}
+.inbottom {
+  animation: rotate 15s linear infinite;
+  transform-origin: 84px 93px;
+}
+.box6 {
+  display: flex;
+  flex-direction: column;
+  max-width: 30vw;
+  max-height: 70vh;
+  filter: opacity(0.9);
+  transition: transform 0.2s ease, max-height 0.3s ease;
+  border-radius: 2px; /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.23);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  border: 1px solid rgba(255, 255, 255, 1);
+  h2 {
+    padding: 50px 0 0 0;
+    font-weight: 900;
+    font-size: 60px;
     text-align: center;
-    color: white;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
   }
-  
-  .bookTitle {
+  .booksContainer {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding: 10% 0 15% 0;
+    scroll-snap-type: x mandatory;
+    &::-webkit-scrollbar {
+      width: 7px;
+      background-color: transparent; /* Makes scrollbar background transparent */
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent; /* Initially make thumb transparent */
+      border-radius: 10px; /* Rounded corners for the thumb */
+    }
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: rgba(
+        145,
+        145,
+        145,
+        0.5
+      ); /* Visible on hover with transparency */
+    }
+    .bookCard {
+      display: flex;
+      min-width: 30vw;
+      justify-content: center;
+      align-items: center;
+      gap: 5%;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      transition: scale 0.2s ease, max-height 0.3s ease;
+    }
+    .bookCard:hover {
+      scale: 1.05;
+    }
+  }
+}
+@media (max-width: 768px) {
+  .home {
+    height: 100vh;
+    overflow-y: auto;
+    background-size: contain;
+  }
+  .section1,
+  .section2,
+  .section3 {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+  .LeftCol,
+  .RightCol {
+    width: 100%;
+    height: auto;
+  }
+  .box1,
+  .box2,
+  .box3,
+  .box4,
+  .box5,
+  .box6 {
+    min-height: 20vh;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .Welcome {
     font-size: 1.5rem;
-    margin: 0;
+    text-align: center;
   }
+  @keyframes fadeInAnimation {
+    0% {
+        font-size: 32px;
+    }
   
-  .bookPrice {
+    100% {
+        font-size: 35px;
+    }
+  }
+  .booksContainer .bookCard {
+    min-width: 90vw;
+  }
+}
+
+
+
+/* Media Queries for Mobile Responsiveness */
+
+/* For smaller tablets and large mobile screens (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .home {
+    height: 90vh; /* Adjusted to accommodate smaller screens */
+  }
+  .section1, .section2, .section3 {
+    display: flex;
+    flex-direction:column;
+    width: 100vw;
+    height: 89vh;
+    padding: 20px; /* Reduced padding for smaller screens */
+  }
+  .box1, .box2, .box3, .box4, .box5, .box6 {
+    padding: 30x; /* Reduced padding for smaller screens */
+  }
+  .box3{
+    margin-left: 60px;
+    margin-right: 0;
+    margin-top: 30px;
+    h2{
+      font-size: 70px;
+      text-align: center;
+      padding: 22px;
+    }
+    
+  }
+  .box2, .box4{
+    display: none;  }
+  .box3{
+    width: 80vw;
+  }
+  .pricepara{
+display: none;  
+}
+
+.section3{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .layer3{
+    height: 89vh;
+  }
+}
+  .box5{
+    width: 80vw;
+  }
+
+  .box6{
+    display: none;
+  }
+  .section1{
+    
+    p{
+      display: none;
+    }
+    Button{
+      display: none;
+    }
+    .Welcome{
+      font-size: 50px;
+      padding-top: 50px;
+    }
+  }
+}
+
+/* For medium mobile screens (max-width: 768px) */
+@media (max-width: 768px) {
+  .home {
+    width: 70vw;
+    overflow-y: auto;
+    background-size: contain;
+  }
+  .section1, .section2{
+    flex-direction: column;
+    height: auto;
+    width: 100vw;
+    padding: 40px;
+  }
+
+  .section3 {
+    display: none;
+  }
+  .LeftCol, .RightCol {
+    width: 100%;
+    height: auto;
+  }
+  .box1, .box2, .box3, .box4, .box5, .box6 {
+    min-height: 20vh;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .box1,.box2,.box4,.box6{
+    display: none;
+  }
+  .box3{
+    width: 55vw;
+    height: 55vh;
+    margin: 0;
+    .judgmentsList{
+      height: 43vh;
+      overflow-y: scroll;
+    }
+    .judges,.doj{
+      display: none;
+    }
+
+    h2{
+      font-size: 40px;
+    }
+  }
+
+  .box5{
+    width: 55vw;
+    height: 55vh;
+    margin: 0;
+    h2{
+    font-size: 30px;
+  }
+  }
+  .Welcome {
     font-size: 1rem;
-    margin: 0;
+    text-align: center;
   }
-  
-  .arrowButton {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 2;
+  .booksContainer .bookCard {
+    min-width: 90vw;
   }
+}
 
-  .arrowButton:hover {
-    scale: 1.5;
-  }
-  
-  .leftArrow {
-    left: 10px; /* Adjust for spacing */
-  }
-  
-  .rightArrow {
-    right: 10px; /* Adjust for spacing */
-  }
 
-  .maps{
-    border-radius: 20px;
+/* For small mobile screens (max-width: 480px) */
+@media (max-width: 480px) {
+  .home {
+    width: 100vw;
+    background-size: cover; /* Reverted to original for smaller screens */
+    height: 94vh; /* Adjusted to accommodate very small screens */
   }
-  
+  .section1, .section2, .section3 {
+    min-height: 94vh; /* Further reduced padding for very small screens */
+  }
+  .box1, .box2, .box3, .box4, .box5, .box6 {
+    padding: 5px; /* Further reduced padding for very small screens */
+    min-height: 15vh; /* Adjusted min-height for very small screens */
+  }
+  .section1{
+  .Welcome {
+    margin-top: 50px ;
+    font-size: 50px; /* Further reduced font size for very small screens */
+  } }
+
+  .section2{
+    align-items: center;
+    .box1,.box2,.box4{
+      display: none;
+    }
+    .box3{
+      margin-left: 30px;
+      width: 80vw;
+      height: 80vh;
+      overflow-y: hidden;
+      .judgmentsList{
+        overflow-y: scroll;
+        max-height: 65vh;
+      }
+      h2{
+        font-size: 28px;
+      }
+      .judges, .doj{
+        display: none;
+      }
+    }
+  }
+ .section3{
+  .box6{
+  display: none;}
+  .box5{
+    padding:20px;
+    h2{
+      font-size: 40px;
+    }
+  }
+ }
+}
+
+/* For extremely small mobile screens (max-width: 320px) */
+@media (max-width: 320px) {
+  .home {
+    height: 100vh;
+    width: 100vw; /* Adjusted to accommodate extremely small screens */
+  }
+  .section1, .section2, .section3 {
+    padding: 2px; /* Minimized padding for extremely small screens */
+  }
+  .box1, .box2, .box3, .box4, .box5, .box6 {
+    padding: 2px; /* Minimized padding for extremely small screens */
+    min-height: 10vh; /* Adjusted min-height for extremely small screens */
+  }
+  .Welcome {
+    font-size: 1rem; /* Minimized font size for extremely small screens */
+  }
+  .booksContainer .bookCard {
+    min-width: 98vw; /* Adjusted to fit extremely small screens */
+  }
+}

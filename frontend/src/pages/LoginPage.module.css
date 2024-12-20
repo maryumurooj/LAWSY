@@ -1,0 +1,46 @@
+.loginPage {
+    display: flex;
+    height: 80vh;
+    width: 100vw;
+    background-color: #000;
+  }
+  
+  .loginLeft {
+    width: 40%;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Slanted edge */
+    
+   
+  }
+  
+  .loginRight {
+    position: absolute;
+    right: 0;
+    width: 50vw;
+    height: inherit;
+    padding: 50px;
+    padding-left: 200px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    clip-path: polygon(30% 0, 100% 0, 100% 100%, 0 100%);
+    z-index: 100;
+    
+  }
+  
+  .loginRight h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #dc3a04;
+  }
+  
+  .loginRight p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  

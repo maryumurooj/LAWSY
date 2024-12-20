@@ -1,0 +1,53 @@
+.heroSection {
+    position: relative;
+    height: 100vh; /* Full viewport height */
+    background-image: url("../../assets/Supremecourt.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+  }
+  
+  .heroSection::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Overlay to darken the image */
+    z-index: 1;
+  }
+  
+  .content {
+    position: relative;
+    z-index: 2;
+  }
+  
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .contactBtn {
+    background-color: #c79f5f;
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .contactBtn:hover {
+    background-color: #a6833a;
+  }
+  

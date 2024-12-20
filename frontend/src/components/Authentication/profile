@@ -1,0 +1,230 @@
+import React, { useState, useEffect } from 'react';
+import { db } from '../../services/firebaseConfig';
+import { collection, doc, getDoc, query, where, onSnapshot, updateDoc } from 'firebase/firestore';
+import { updateEmail, updatePassword, updateProfile } from 'firebase/auth';
+import { useAuth } from '../../services/AuthContext';
+import BillingAddress from './BillAdd';
+import styles from './Profile.module.css'; // Importing module CSS
+
+const Profile = () => {
+  const { user } = useAuth();
+  const [username, setUsername] = useState(user?.displayName || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [password, setPassword] = useState('');
+  const [reenterPassword, setReenterPassword] = useState('');
+  const [subscription, setSubscription] = useState(null);
+  const [billingAddress, setBillingAddress] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [profilePic, setProfilePic] = useState('');
+  const [showBillingForm, setShowBillingForm] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); // New state to track edit mode
+
+  // Fetch user subscription in real-time using onSnapshot
+  useEffect(() => {
+    if (!user) return;
+
+    const subscriptionQuery = query(
+      collection(db, 'subscriptions'),
+      where('uid', '==', user.uid),
+      where('subscriptionStatus', '==', 'active')
+    );
+
+    const unsubscribeSubscription = onSnapshot(subscriptionQuery, (snapshot) => {
+      const subs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      if (subs.length > 0) {
+        setSubscription(subs[0]);
+      } else {
+        setSubscription(null); // No active subscription found
+      }
+    });
+
+    // Cleanup the listener when the component unmounts
+    return () => unsubscribeSubscription();
+  }, [user]);
+
+  // Fetch billing address in real-time using onSnapshot
+  useEffect(() => {
+    if (!user) return;
+
+    const billingDocRef = doc(db, 'billing', user.uid);
+
+    const unsubscribeBilling = onSnapshot(billingDocRef, (doc) => {
+      if (doc.exists()) {
+        setBillingAddress(doc.data());
+      } else {
+        console.log('No billing address found.');
+      }
+    });
+
+    // Cleanup the listener when the component unmounts
+    return () => unsubscribeBilling();
+  }, [user]);
+
+  // Photo URL
+  useEffect(() => {
+    if (user?.photoURL) {
+      setProfilePic(user.photoURL);
+    } else {
+      setProfilePic('https://via.placeholder.com/150?text=👤');
+    }
+  }, [user]);
+
+  // Handle profile updates (username, email, password)
+  const handleUpdateProfile = async () => {
+    if (!user) return;
+
+    if (password && password !== reenterPassword) {
+      alert('Passwords do not match. Please try again.');
+      return;
+    }
+
+    setIsUpdating(true);
+
+    try {
+      await updateProfile(user, { displayName: username });
+      if (email !== user.email) await updateEmail(user, email);
+      if (password && password === reenterPassword) await updatePassword(user, password);
+
+      // Update Firestore with the new user data
+      const userDocRef = doc(db, 'users', user.uid);
+      await updateDoc(userDocRef, { displayName: username, email });
+
+      alert('Profile updated successfully!');
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile.');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  return (
+    <div className={styles.profileContainer}>
+      {/* Profile Picture and Basic Info */}
+      <div className={styles.leftColumn}>
+        <img src={profilePic} alt="Profile" className={styles.profilePic} />
+        <h2 className={styles.username}>{username}</h2>
+        <p className={styles.role}>Member Status</p>
+      </div>
+
+      {/* Contract and Account Info */}
+      <div className={styles.rightColumn}>
+        <div className={styles.detailscard}>
+          <h2 className={styles.title}> Account Details</h2>
+          <table className={styles.table}>
+            {isEditing ? (
+              <tbody>
+                {/* Form fields to edit profile */}
+                <tr>
+                  <td className={styles.label}><strong>Email:</strong></td>
+                  <td className={styles.value}>
+                    <input 
+                      type="email" 
+                      value={email} 
+                      onChange={(e) => setEmail(e.target.value)} 
+                      className={styles.input}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className={styles.label}><strong>Username:</strong></td>
+                  <td className={styles.value}>
+                    <input 
+                      type="text" 
+                      value={username} 
+                      onChange={(e) => setUsername(e.target.value)} 
+                      className={styles.input}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className={styles.label}><strong>Password:</strong></td>
+                  <td className={styles.value}>
+                    <input 
+                      type="password" 
+                      value={password} 
+                      onChange={(e) => setPassword(e.target.value)} 
+                      className={styles.input}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className={styles.label}><strong>Re-enter Password:</strong></td>
+                  <td className={styles.value}>
+                    <input 
+                      type="password" 
+                      value={reenterPassword} 
+                      onChange={(e) => setReenterPassword(e.target.value)} 
+                      className={styles.input}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            ) : (
+              <tbody>
+                {/* Display existing profile details */}
+                <tr>
+                  <td className={styles.label}><strong>Email:</strong></td>
+                  <td className={styles.value}>{email}</td>
+                </tr>
+                <tr>
+                  <td className={styles.label}><strong>Username:</strong></td>
+                  <td className={styles.value}>{username}</td>
+                </tr>
+              </tbody>
+            )}
+          </table>
+        </div>
+
+        {/* Edit buttons */}
+        {!isEditing ? (
+          <button className={styles.updateBillingBtn} onClick={() => setIsEditing(true)}>
+            Edit Profile
+          </button>
+        ) : (
+          <button className={styles.updateBillingBtn} onClick={handleUpdateProfile} disabled={isUpdating}>
+            {isUpdating ? 'Updating...' : 'Update'}
+          </button>
+        )}
+
+        {/* Subscription Info */}
+        <div className={styles.detailscard}>
+          {subscription ? (
+            <>
+              <h2 className={styles.title}>Your Subscription</h2>
+              <table className={styles.table}>
+                <tbody>
+                  <tr>
+                    <td className={styles.label}><strong>Plan:</strong></td>
+                    <td className={styles.value}>{subscription.planName}</td>
+                  </tr>
+                  <tr>
+                    <td className={styles.label}><strong>Price:</strong></td>
+                    <td className={styles.value}>₹{subscription.price}</td>
+                  </tr>
+                  <tr>
+                    <td className={styles.label}><strong>Duration:</strong></td>
+                    <td className={styles.value}>{subscription.duration} days</td>
+                  </tr>
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <h2 className={styles.title}>No active subscription found.</h2>
+          )}
+        </div>
+
+        {/* Billing Address Form */}
+        <button className={styles.updateBillingBtn} onClick={() => setShowBillingForm(!showBillingForm)}>
+          {showBillingForm ? 'Cancel Billing Update' : 'Update Billing Address'}
+        </button>
+        {showBillingForm && billingAddress && (
+          <BillingAddress billingData={billingAddress} userId={user.uid} />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Profile;

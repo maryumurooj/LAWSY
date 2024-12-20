@@ -1,0 +1,113 @@
+
+.footer {
+  width: 100%;
+  background-color: black;
+  color: aliceblue;
+  display:flex;
+  min-height: 0;
+  gap: 10vw;
+  padding: 24px 120px 25px 84px;
+  box-sizing: border-box;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  font-size: var(--font-size-5xl);
+  font-family: 'Abhaya Libre ExtraBold', sans-serif;
+  
+}
+
+.section{
+  display:flex;
+  flex-direction:column;
+  justify-content: flex-start;
+  gap:10px;
+  border: 1px solid white;
+  padding-left:20px;
+  border-right:none;
+  border-top:none;
+  border-bottom:none;
+  height:30vh;
+
+
+
+  img{
+    width:80%;
+    height:80%;
+    object-fit: cover;
+  
+  }
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align:left;
+    font-size:16px;
+    /* Sufficient padding for clickable area */
+    color: #ffffff;
+    
+    /* Position relative for absolute positioning of dropdown */
+    /* Remove default focus outline */
+    &:focus {
+      outline: none;
+    }
+
+    /* Hover state adds an underline */
+    &:hover {
+     color: red /* Underline color */
+    }
+
+    /* Active state simulates the button being pressed */
+    &:active {
+      transform: scale(0.95); /* Scales down the button to give a "pressed" effect */
+    }
+  }
+
+  
+}
+
+
+
+
+@media screen and (max-width: 1100px) {
+  .footer {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 750px) {
+  .footer {
+    padding-left: 42px;
+    padding-right: 60px;
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 450px) {
+  .ald {
+    font-size: var(--font-size-lgi);
+    line-height: 21px;
+  }
+  .navigationArea {
+    gap: 66px;
+  }
+  
+  .footer {
+    width: 100%;
+    background-color: black;
+    color: aliceblue;
+    display: flex;
+    justify-content: space-between;
+    padding: 24px 120px 54px 84px;
+    box-sizing: border-box;
+    line-height: normal;
+    letter-spacing: normal;
+    gap: var(--gap-xl);
+    text-align: left;
+    font-size: var(--font-size-5xl);
+    font-family: var(--font-abhaya-libre-extrabold);
+    position: relative; /* Stick it to the bottom of the viewport */
+    bottom: 0; /* Stick it to the bottom of the viewport */
+  }
+
+}
+
+
+

@@ -1,0 +1,262 @@
+/* Styles for the subcontainer */
+.subcontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 275px;
+  margin-left: -29px;
+}
+
+.subitem {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 38px;
+  font-weight: 600;
+  color: #B22525;
+  position: relative;
+  width: 70%;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 25px;
+  z-index: 2;
+
+  button{
+    border: none;
+    border-radius: 50%; /* Make the button circular */
+    background-color: #000000;
+    color: white;
+    width: 13; /* Adjust size as needed */
+    height: 13; /* Adjust size as needed */
+    font-size: 15px; /* Increase font size */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s; /* Smooth transition for background color change */
+    margin-left: 2px; 
+    
+  }
+  button:hover{
+    background-color: #E34A3E;
+  }
+}
+
+/* Styles for the main container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  width: 275px;
+  max-height:100vw;
+}
+
+.item {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 38px;
+  font-weight: 600;
+  color: #B22525;
+  position: relative;
+  width: 75%;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 25px;
+}
+
+/* Styles for rectangles */
+
+
+/*styles for advancedsearch rectangle*/
+.rectangleadvancedsearch{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border: 1px solid #000000;
+  z-index: -2;
+  border-bottom: none;
+  border-radius: 20px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  height: 250px;
+  margin-left: -3px;
+}
+
+
+
+
+/* Styles for search input */
+.searchInput {
+  position: relative;
+  top: 0;
+  left: px;
+  width: 85%;
+  height: 100%;
+  border: 1px solid #000000;
+}
+
+/* Styles for sidebar */
+.sidebar {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+
+  border-radius: 0 20px 20px 0;
+  border-left: none;
+  border-right: 1px solid #e34a3e;
+  border-top: 1px solid #e34a3e;
+  border-bottom: 1px solid #e34a3e;
+  margin-left: 55px;
+}
+
+
+
+.combinedResults {
+  border: 1px solid #000000; /* Black border */
+  margin-bottom: 10px; /* Adjust as needed */
+ height: 200px;
+   /* Specified height for the container */
+  overflow-y: scroll; /* Enable vertical scrolling if container overflows */
+  padding: 10px; /* Padding around the content */
+  width: 164px;
+  margin-left: 4px;
+  margin-top:10px;
+  &::-webkit-scrollbar {
+    width: 7px;
+    background-color: transparent; /* Makes scrollbar background transparent */
+}
+
+&::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Initially make thumb transparent */
+    border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+&:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(145, 145, 145, 0.5); /* Visible on hover with transparency */
+}
+}
+
+.combinedResults h3 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: #B22525;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* SidePanel.module.css */
+
+.addedItem {
+  font-size: small;
+  display: flex; /* Use flexbox for added items */
+  justify-content: space-between;
+  align-items: center; /* Center align items vertically */
+  padding: 5px 10px; /* Add padding for item spacing */
+  background-color: #f0f0f0; /* Example background color */
+  margin-right: 5px; /* Adjust margin between items */
+  margin-bottom: 5px; /* Adjust margin between lines */
+  position: relative; /* Enable relative positioning for sticky button */
+}
+
+.addedItem button {
+  border: none;
+  border-radius: 50%; /* Make the button circular */
+  background-color: #000000;
+  color: white;
+  width: 13; /* Adjust size as needed */
+  height: 13; /* Adjust size as needed */
+  font-size: 15px; /* Increase font size */
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s; /* Smooth transition for background color change */
+  margin-left: 2px;
+}
+.addedItem button:hover{
+  background-color: #E34A3E;
+}
+
+.filterButton{
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.filtercontainer{
+  border: 1px solid black;
+  border-bottom: none;
+  border-radius: 20px 20px 0px 0px;
+  width: 180px;
+  display: flex;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  z-index: 100;
+  
+align-items: center;
+button{
+  background-color: transparent;
+  color:#B22525;
+  font-weight: bold;
+}
+button:hover{
+  background-color: transparent;
+}
+}
+.button {
+  display: flex;
+  justify-content: flex-end; /* Align button to the right */
+  margin-top: 20px; /* Add some spacing */
+  margin-bottom: 15px;
+}
+.button button {
+  background-color: #000000; /* Black background */
+  color: white;
+  border: none;
+  padding: 5px 15px; /* Reduced padding */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px; /* Reduced font size */
+  margin-left: 5px; /* Added margin between buttons */
+  cursor: pointer;
+  border-radius: 6px; /* Slightly less rounded corners */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.button button:hover {
+  background-color: #E34A3E; /* Red on hover */
+}
+
+.clearButton {
+  background-color: #f8f9fa; /* Light gray */
+  border: 1px solid #adb5bd; /* Gray border */
+  color: #495057; /* Dark gray text */
+  padding: 8px; /* Reduced padding */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px; /* Reduced font size */
+  margin-left: 5px; /* Added margin between buttons */
+  cursor: pointer;
+  border-radius: 6px; /* Slightly less rounded corners */
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.clearButton:hover {
+  background-color: #e9ecef; /* Lighter gray on hover */
+  border-color: #868e96; /* Darker gray border on hover */
+}

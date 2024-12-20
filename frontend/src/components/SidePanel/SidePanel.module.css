@@ -1,0 +1,208 @@
+/* SidePanel.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid #000000;
+  height: auto;
+  border-bottom: none;
+  border-radius: 20px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  width: 190px;
+}
+
+.searchelement,
+.subitem {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 38px;
+  font-weight: 600;
+  color: #B22525;
+  position: relative;
+
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.item {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 38px;
+  font-weight: 600;
+  color: #B22525;
+  position: relative;
+
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 25px;
+  cursor: pointer;
+}
+
+
+.collapsedRectangle {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  height: 100%;
+  border: 1px solid #000000;
+  z-index: 2;
+  border-bottom: none;
+  border-radius: 20px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  cursor: pointer;
+  /* Change cursor to pointer */
+}
+
+.expandedRectangle {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  height: 170px;
+  /* Adjusted height for expanded state */
+  border: 1px solid #000000;
+  z-index: -1;
+  border-bottom: none;
+  border-radius: 20px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-left: -3px;
+  transition: height 0.3s ease-in-out;
+  /* Add transition for smooth height change */
+  cursor: pointer;
+  /* Change cursor to pointer */
+}
+
+.search,
+.searchInput {
+
+
+  height: 93%;
+  border: 1px solid #000000;
+}
+
+
+.sidebar {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  width: 200px;
+  height: 500px;
+  padding: 10px 0px 10px 0px;
+  border-radius: 0 20px 20px 0;
+  border-left: none;
+  border-right: 1px solid #e34a3e;
+  border-top: 1px solid #e34a3e;
+  border-bottom: 1px solid #e34a3e;
+  margin-left: 10px;
+
+}
+
+.open {
+  height: 170px;
+  /* Adjusted height for expanded state */
+  border: 1px solid #000000;
+  height: auto;
+  border-bottom: none;
+  border-radius: 20px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-left: -3px;
+  transition: height 0.3s ease-in-out;
+  /* Add transition for smooth height change */
+  cursor: pointer;
+  /* Change cursor to pointer */
+}
+
+.close {
+  /* Adjusted height for expanded state */
+  border: 1px solid #000000;
+  height: auto;
+  border-bottom: none;
+  border-radius: 20px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-left: -3px;
+  transition: height 0.3s ease-in-out;
+  /* Add transition for smooth height change */
+  cursor: pointer;
+  /* Change cursor to pointer */
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end; /* Align button to the right */
+  margin-top: 20px; /* Add some spacing */
+  margin-bottom: 15px;
+}
+
+.button button {
+  background-color: #000000; /* Black background */
+  color: white;
+  border: none;
+  
+  padding: 5px 15px; /* Reduced padding */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px; /* Reduced font size */
+  margin-left: 5px; /* Added margin between buttons */
+  cursor: pointer;
+  border-radius: 6px; /* Slightly less rounded corners */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.button button:hover {
+  background-color: #E34A3E; /* Red on hover */
+}
+
+.clearButton {
+  background-color: #f8f9fa; /* Light gray */
+  border: 1px solid #adb5bd; /* Gray border */
+  color: #495057; /* Dark gray text */
+  padding: 8px; /* Reduced padding */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px; /* Reduced font size */
+  margin-left: 5px; /* Added margin between buttons */
+  cursor: pointer;
+  border-radius: 6px; /* Slightly less rounded corners */
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.clearButton:hover {
+  background-color: #e9ecef; /* Lighter gray on hover */
+  border-color: #868e96; /* Darker gray border on hover */
+}
+
+.caseNoList{
+  max-height: 200px;
+  width: 200px;
+  overflow-y: scroll;
+  .caseNoItem{
+    padding: 10px;
+    border: 1px solid grey;
+
+    
+  }
+  .caseNoItem:hover{
+    background-color: #495057;
+    color: white;
+  }
+}

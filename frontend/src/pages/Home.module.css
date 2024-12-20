@@ -1,0 +1,327 @@
+.container {
+  position: relative;
+}
+
+.image {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 400px;  
+  object-fit: cover;
+  margin-right:600px;
+  width: 25vw;
+  
+
+}
+.homeSlider{
+  padding-top: 25px;
+  width: 25vw;
+  height: 100vh;
+  border:1px black;
+ 
+}
+.homeContainer{
+  display:flex;
+  justify-content: space-between;
+  margin-top:0px;
+  gap:30px;
+  height:400px;
+  margin:20px;
+  width:95%;
+  margin-left:50px;
+  
+}
+.BOX{
+  padding:10px 0px 0px 25px;
+  border:2px solid #000000;
+  border-right:none;
+  border-top:none;
+  border-bottom:none;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  height:450px;
+  width:75vw;
+}
+.row{
+  display:flex;
+  justify-content: space-between;
+  gap:25vw;
+}
+.judgmentHeading{
+  font-family: 'Abhaya Libre ExtraBold', sans-serif;
+  font-size: 20px;
+  text-decoration-line: underline;
+  text-decoration-thickness:2px;
+  color: #000;
+  font-weight:700;
+  padding:10px 0px 10px 0px;
+
+
+
+
+  text-align:center;
+}
+
+.searchBar {
+  width: 95%;
+  height: 40px;
+  border-radius: 87px;
+  align-items: center;
+  justify-content: left;
+  justify-content: space-between;
+  border: 2px solid #000000;
+  padding:0px 15px 0px 20px;
+  display:flex;
+  
+  input{
+    width: 410px;
+    height: 30px;
+    border: none;
+    outline: none;
+    font-size:15px;
+
+  }
+  input:focus{
+    border: 1px solid #ffffff;
+    outline: none;
+  }
+  
+ 
+}
+.homeJudgment{
+  display:flex;
+  flex-direction:column;
+  justify-content: space-evenly;
+  gap:22px;
+  overflow-y: scroll;
+  height: 50vh;
+  &::-webkit-scrollbar {
+    width: 7px;
+    background-color: transparent; /* Makes scrollbar background transparent */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Initially make thumb transparent */
+    border-radius: 10px; /* Rounded corners for the thumb */
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(145, 145, 145, 0.5); /* Visible on hover with transparency */
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(173, 173, 173, 0.5); /* Color of the scrollbar thumb */
+    border-radius: 5px; /* Rounded corners for the scrollbar thumb */
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent; /* Color of the scrollbar track */
+  }
+  
+  
+}
+.judgmentTitle{
+  font-family: 'Abhaya Libre ExtraBold', sans-serif;
+  font-size: 18px;
+  color: #000;
+  font-weight:700;
+}
+
+.judgmentParties{
+  font-family: 'Abhaya Libre ExtraBold', sans-serif;
+  font-size: 15px;
+  color: #000;
+  font-weight:500;
+}
+
+.judgmentDate{
+  font-family: 'Abhaya Libre ExtraBold', sans-serif;
+  font-size: 15px;
+  color: #db6606;
+  font-weight:600;
+}
+
+.judgmentText{
+  font-family: 'Abhaya Libre ExtraBold', sans-serif;
+  font-size: 15px;
+  color: #000000;
+  font-weight:300;
+}
+
+.judgmentButton{
+  font-family: 'Abhaya Libre ExtraBold', sans-serif;
+  color: #000000;
+  font-weight:300;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:50px;
+  margin-right:50px;
+  
+  
+  
+
+  button{
+    
+    border: 1.5px solid white;
+    font-size:30px;
+    background-color: white;
+    font-size:13px;
+    cursor:pointer;
+    font-weight:700;
+    color:black; 
+    width: 100%;
+    display:flex;
+    
+    align-items:center;
+    gap:6px;
+
+    .arrow{
+      font-size: 22px;
+      font-weight:100;
+
+    }
+    
+   
+  }
+}
+
+
+
+
+
+.searchIcon {
+  width: 20px; /* Adjust size as needed */
+  height: 20px;
+  fill: #000000; /* Adjust color as needed */
+  margin-left: 10px; /* Adjust spacing from the input */
+   /* Position the icon */
+   /* Adjust as needed */
+  cursor: pointer; /* Add pointer cursor */
+  
+  
+}
+
+.title {
+  width: 396px;
+  height: 60px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 60px;
+  text-decoration-line: underline;
+  color: #000000;
+  
+}
+
+.judgementTitle {
+  font-size:25px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px; /* Increase vertical gap */
+}
+
+.judgementInfo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px; /* Increase vertical gap */
+}
+
+.judgementDetails {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px; /* Increase vertical gap */
+}
+
+.judgementDate {
+  display: flex;
+  flex-direction: column;
+  color: #B22525;
+  margin-bottom: 15px; /* Increase vertical gap */
+}
+
+.judgementTitle {
+  font-weight: bold;
+  margin-bottom: 15px; /* Increase vertical gap */
+}
+
+.readMore {
+  font-weight: bold;
+}
+
+.arrow {
+  margin-left: 5px;
+}
+.latestJudgements {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  margin-left:90px;
+}
+
+.judgementlinecontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+  border: 2px solid #000000;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  padding: 20px;
+  margin-bottom: 0px;
+}
+
+/* Additional styles for positioning */
+.judgementlinecontainer:nth-child(odd) {
+  margin-right: 15px; /* Add right margin to odd containers */
+  margin-bottom: -198px; /* Adjust margin bottom to align with even containers */
+}
+
+.judgementlinecontainer:nth-child(even) {
+  margin-left: 575px; /* Add left margin to even containers */
+}
+
+
+.aboutTitle {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 60px;
+  color: #000000;
+  text-decoration-line: underline;
+  margin-top:30px;
+}
+
+.aboutPara {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 30px;
+  color: #000000;
+  
+}
+.Aboutlinecontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 2px solid #000000;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  padding: 20px;
+  margin-bottom: 0px;
+  margin-top:10px;
+}
+

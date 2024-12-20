@@ -1,0 +1,161 @@
+
+
+.container {
+    display: flex;
+    justify-content: center; /* Center the inputs horizontally */
+    align-items: center; /* Center the inputs vertically */
+    flex-wrap: wrap; /* Allow wrapping for responsiveness */
+    margin: 20px; /* Add margin around the container */
+  }
+
+  .body {
+    justify-content: center;
+    padding: 0px 2px 0px 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    overflow-x: none;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .formContainer {
+    position: relative;
+    width: 100%; /* Change to 100% to fit parent */
+    max-height: 95vh; /* Set a max-height */
+    margin: 5px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .2);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    overflow-y: scroll;
+    border: 1px solid #d14900;
+    box-shadow: 0px 0px 10px #d14900;
+  }
+  .userTable {
+    width: 100%; /* Set the table width to 100% to fit the screen */
+    border-collapse: collapse; /* Remove space between table cells */
+    margin-top: 20px; /* Space above table */
+    font-family: 'Arial', sans-serif; /* Use a modern sans-serif font */
+}
+
+.userTable th,
+.userTable td {
+    border: 1px solid #4d4d4d; /* Dark gray border for a softer contrast */
+    padding: 10px; /* Slightly increased padding for better spacing */
+    text-align: left; /* Align text to the left */
+    font-size: 14px; /* Font size for table cells */
+}
+
+.userTable th {
+    background-color: #6d6d6d; /* Dark gray background for header */
+    color: #ffffff; /* White header text color */
+    font-size: 15px; /* Slightly larger font size for header */
+    text-transform: uppercase; /* Uppercase for a modern look */
+}
+
+.userTable tbody tr {
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.userTable tbody tr {
+    background-color: #f9f9f9; /* Light gray background for table rows */
+}
+
+.userTable tbody tr:hover {
+    background-color: #d1d1d1; /* Medium gray highlight on hover */
+}
+
+.userTable tbody tr:nth-child(even) {
+    background-color: #eaeaea; /* Slightly darker gray for even rows */
+}
+
+
+.row {
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    column-gap: 40px; /* Adjust the gap between columns */
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Adjust to flex-start for better alignment */
+    gap: 1px;
+    width: 100%;
+}
+
+label {
+    font-size: 16px; /* Adjust label font size */
+    padding: 10px 0px 2px 10px; /* Reduced padding */
+    padding-top: 0px;
+    padding-left: 5px;
+}
+
+
+  .inputField, .selectField {
+    height: 40px; /* Increased height */
+    width: 248px; /* Increased width */
+    font-size: 15px; /* Font size */
+    border: 1px solid #000; /* Border style */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+    padding: 10px; /* Padding inside the input/select */
+    margin: 20px 5px; /* Margin for spacing between inputs */
+}
+
+
+
+  .UserButton, .bulk-button {
+    background-color:black;
+  color:white;
+  padding:5px;
+  border-radius: 12px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  text-align:center;
+  width: 12%;
+  height: 40px;
+  margin: 10px; /* Increase this value for more space between buttons */
+
+
+}
+
+.UserButton:hover, .bulk-button:hover {
+    background-color: #b71a09;
+    cursor:pointer;  }
+
+    .UserButton:disabled, .bulk-button:disabled {
+        background-color: #c0c0c0; /* Light gray for disabled buttons */
+    cursor: not-allowed; /* Not allowed cursor for disabled buttons */
+  }
+
+  .club {
+    display: flex;
+    gap: 20px;
+  }
+
+  .placeholder {
+    font-size: 12px; /* Decrease the font size */
+    margin-bottom: 5px; /* Add some bottom margin to create space */
+    display: block; /* Ensure the label is displayed as a block element */
+  }
+
+
+  input[type="checkbox"] {
+    width: 20px; /* Set the width of the checkbox */
+    height: 20px; /* Set the height of the checkbox */
+    margin: 0; /* Remove margin to avoid extra space */
+    cursor: pointer; /* Change the cursor to a pointer when hovering */
+  }
+
+
+
+

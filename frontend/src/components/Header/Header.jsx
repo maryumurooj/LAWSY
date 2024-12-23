@@ -54,9 +54,9 @@ const HeaderComponent = () => {
 
   return (
     <div className={classes.headerComponent}>
-      <div className={classes.titlelogo}>
-        <img onClick={Navigate("/home")} className={classes.logoImage} src={logo} alt="Logo" />
-        <img className={classes.titleImage} src={titleImage} alt="Title" />
+      <div onClick={Navigate("/home")} className={classes.titlelogo}>
+        <img  className={classes.logoImage} src={logo} alt="Logo" />
+        <img   className={classes.titleImage} src={titleImage} alt="Title" />
       </div>
 
       <div className={classes.headerComponentInner}>

@@ -17,7 +17,6 @@ import { Alert } from "reactstrap";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-
 const IndexPage = () => {
   const { user, subscriptionStatus } = useAuth();
   const [judgmentId, setJudgmentId] = useState('');

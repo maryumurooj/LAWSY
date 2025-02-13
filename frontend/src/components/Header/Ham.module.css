@@ -93,7 +93,7 @@
     color: #007bff;
   }
   
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
     /* Hide hamburger menu on larger screens */
     .hamburger {
       display: none;

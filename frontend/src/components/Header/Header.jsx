@@ -27,7 +27,7 @@ const HeaderComponent = () => {
   }, [user]);
 
   const checkWindowSize = () => {
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 992) {
       setIsMobile(true);
       setShowHamMenu(false); // Close Ham menu on smaller screens
     } else {
@@ -40,7 +40,8 @@ const HeaderComponent = () => {
   };
 
   const CustomToggle = React.forwardRef(({ onClick }, ref) => (
-    <img
+    <div className={classes.pfpusername}>
+      <img
       ref={ref}
       src={profilePic}
       alt="Profile"
@@ -50,6 +51,9 @@ const HeaderComponent = () => {
         onClick(e);
       }}
     />
+    <div className={classes.displayname}> {user.displayName} </div>
+
+    </div>
   ));
 
   return (

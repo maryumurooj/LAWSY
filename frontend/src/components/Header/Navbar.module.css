@@ -50,14 +50,13 @@
 .dropdownContent {
   display: none; /* Hide dropdown content by default */
   position: fixed; /* Position dropdown content fixed to the viewport */
-  top: 150px; /* Keep the top position as provided */
-  left: 130px; /* Keep the left position as provided */
+  top: 3.5rem; /* Keep the top position as provided */
   transform: translateX(-50%); /* Center dropdown content horizontally */
   background-color: #ffffff; /* Background color of dropdown */
   min-width: 120px; /* Increase minimum width for better readability */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Update box shadow for subtle effect */
   border-radius: 8px; /* Add border radius for a softer look */
-  z-index: 999; /* Ensure dropdown appears above other content */
+  z-index: 9001; /* Ensure dropdown appears above other content */
   
 }
 
@@ -94,7 +93,7 @@
 
 /* Media Queries for Mobile Responsiveness */
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .navBarDefault {
     flex-direction: column;
     align-items: center;
@@ -178,7 +177,7 @@
 }
 
 /* Media Queries for Mobile Responsiveness - Updated */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .navBarDefault {
     padding: 10px; /* Optional: Add padding if needed */
   }

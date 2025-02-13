@@ -4,6 +4,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import multer from "multer";
 
 const app = express();
 const port = 3000;
@@ -2346,7 +2347,6 @@ app.get("/api/user-notes/:uid", async (req, res) => {
 //BOOKMARKS
 
 // POST API to add a bookmark
-// POST API to add a bookmark (with nested folder handling)
 app.post("/api/bookmarks", async (req, res) => {
   const {
     title,
@@ -2360,69 +2360,249 @@ app.post("/api/bookmarks", async (req, res) => {
   } = req.body;
 
   // Validate required fields
-  if (!title || !uid || !url) {
-    return res
-      .status(400)
-      .json({ message: "Title, URL, and UID are required." });
+  if (!title || !uid || !judgmentId) {
+    return res.status(400).json({
+      success: false,
+      message: "Title, user ID, and judgment ID are required",
+    });
   }
 
+  let connection;
   try {
-    let resolvedFolderId = folder_id || null;
+    connection = await pool.getConnection();
+    await connection.beginTransaction();
 
-    // Handle dynamic folder creation or resolution
-    if (folder_name) {
-      // Check if the folder exists for the user
-      const [folderResults] = await pool.query(
-        "SELECT id FROM folders WHERE folder_name = ? AND uid = ? AND parent_id = ?",
-        [folder_name, uid, parent_folder_id || null]
+    let resolvedFolderId = folder_id;
+
+    // Create new folder if folder_name is provided and folder doesn't exist
+    if (folder_name && !folder_id) {
+      const [existingFolders] = await connection.query(
+        "SELECT id FROM folders WHERE folder_name = ? AND uid = ?",
+        [folder_name, uid]
       );
 
-      if (folderResults.length === 0) {
-        // Folder doesn't exist, create it
-        const [result] = await pool.query(
+      if (existingFolders.length === 0) {
+        const [result] = await connection.query(
           "INSERT INTO folders (folder_name, uid, parent_id) VALUES (?, ?, ?)",
           [folder_name, uid, parent_folder_id || null]
         );
         resolvedFolderId = result.insertId;
       } else {
-        // Folder exists, use its ID
-        resolvedFolderId = folderResults[0].id;
+        resolvedFolderId = existingFolders[0].id;
       }
     }
 
     // Insert the bookmark
-    const [insertResults] = await pool.query(
+    const [result] = await connection.query(
       "INSERT INTO bookmarks (title, note, url, folder_id, uid, judgmentId) VALUES (?, ?, ?, ?, ?, ?)",
-      [title, note, url, resolvedFolderId, uid, judgmentId || null]
+      [title, note || null, url || null, resolvedFolderId, uid, judgmentId]
     );
 
+    await connection.commit();
+
     res.status(201).json({
-      message: "Bookmark and folder (if applicable) added successfully.",
-      bookmarkId: insertResults.insertId,
-      folderId: resolvedFolderId,
+      success: true,
+      message: "Bookmark saved successfully",
+      bookmarkId: result.insertId,
     });
-  } catch (err) {
-    console.error("Error processing request:", err);
-    res.status(500).json({ message: "Failed to add bookmark or folder." });
+  } catch (error) {
+    if (connection) {
+      await connection.rollback();
+    }
+    console.error("Error saving bookmark:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to save bookmark",
+      error: error.message,
+    });
+  } finally {
+    if (connection) {
+      connection.release();
+    }
   }
 });
 
+// Get folders for a user
 app.get("/api/folders", async (req, res) => {
   const { uid } = req.query;
 
   if (!uid) {
-    return res.status(400).json({ message: "User ID is required." });
+    return res.status(400).json({
+      success: false,
+      message: "User ID is required",
+    });
   }
 
   try {
     const [folders] = await pool.query(
-      "SELECT id, folder_name FROM folders WHERE uid = ?",
+      "SELECT id, folder_name, parent_id FROM folders WHERE uid = ? ORDER BY folder_name",
       [uid]
     );
-    res.status(200).json(folders);
-  } catch (err) {
-    console.error("Error fetching folders:", err);
-    res.status(500).json({ message: "Failed to fetch folders." });
+
+    res.status(200).json({
+      success: true,
+      folders: folders.length > 0 ? folders : [],
+    });
+  } catch (error) {
+    console.error("Error fetching folders:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch folders",
+      error: error.message,
+    });
+  }
+});
+
+//Marquee
+app.put("/api/marquee", async (req, res) => {
+  try {
+    const { message } = req.body;
+    const [result] = await pool.execute(
+      "UPDATE marquee SET message = ? WHERE id = 1",
+      [message]
+    );
+    if (result.affectedRows === 0) {
+      await pool.execute("INSERT INTO marquee (id, message) VALUES (1, ?)", [
+        message,
+      ]);
+    }
+    res.send({
+      success: true,
+      message: "Marquee content updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send({ success: false, message: "Failed to update marquee content" });
+  }
+});
+
+// API Endpoint to Fetch Current Marquee Content
+app.get("/api/marquee", async (req, res) => {
+  try {
+    const [rows] = await pool.execute(
+      "SELECT message, NOW() as lastUpdated FROM marquee WHERE id = 1"
+    );
+    if (rows.length > 0) {
+      res.send({ success: true, ...rows[0] });
+    } else {
+      res.send({ success: false, message: "No marquee content found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send({ success: false, message: "Failed to fetch marquee content" });
+  }
+});
+
+// BOOKS
+
+// Multer setup for image uploads
+const sanitizeFilename = (name) => {
+  return name.replace(/[^a-zA-Z0-9]/g, "_"); // Replace special characters with underscores
+};
+
+// Configure storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/books/"); // Ensure this folder exists
+  },
+  filename: (req, file, cb) => {
+    const bookName = req.body.book_name ? sanitizeFilename(req.body.book_name) : "unknown";
+    const ext = path.extname(file.originalname);
+    cb(null, `${bookName}_${Date.now()}${ext}`); // Append timestamp to avoid duplicates
+  },
+});
+
+const upload = multer({ storage });
+
+// Add new book
+app.post("/api/books", upload.single("image"), async (req, res) => {
+  try {
+    const { book_name, edition, price, in_stock } = req.body;
+    const imagePath = req.file ? `/uploads/books/${req.file.filename}` : null; // Save relative path
+
+    const inStockValue = in_stock === "true" || in_stock === 1 ? 1 : 0; // Ensure correct format
+
+    const sql =
+      "INSERT INTO books (book_name, edition, price, in_stock, image) VALUES (?, ?, ?, ?, ?)";
+    const values = [book_name, edition, price, inStockValue, imagePath];
+
+    await pool.query(sql, values);
+    res.status(200).json({ success: true, message: "Book added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Database error" });
+  }
+});
+
+// Serve images statically
+app.use("/books", express.static("books"));
+
+// Fetch all books
+app.get("/api/books", async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT id, book_name, edition, price, in_stock, image FROM books"
+    );
+    // Ensure `in_stock` is returned as a boolean for frontend consistency
+    const formattedRows = rows.map((book) => ({
+      ...book,
+      in_stock: book.in_stock === 1 ? true : false,
+    }));
+
+    res.send({ success: true, books: formattedRows });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ success: false, message: "Failed to fetch books" });
+  }
+});
+
+// Update book details and optionally replace the image
+app.put("/api/books/:id", upload.single("image"), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { book_name, edition, price, in_stock } = req.body;
+
+    const inStockValue = in_stock === "true" || in_stock === 1 ? 1 : 0; // Ensure correct format
+
+    let query = "UPDATE books SET book_name = ?, edition = ?, price = ?, in_stock = ?";
+    let params = [book_name, edition, price, inStockValue];
+
+    if (req.file) {
+      query += ", image = ?";
+      params.push(`/books/${req.file.filename}`);
+    }
+
+    query += " WHERE id = ?";
+    params.push(id);
+
+    await pool.query(query, params);
+    res.send({ success: true, message: "Book updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ success: false, message: "Failed to update book" });
+  }
+});
+
+// Toggle in_stock status
+app.patch("/api/books/:id/toggle-in-stock", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query(
+      "UPDATE books SET in_stock = CASE WHEN in_stock = 1 THEN 0 ELSE 1 END WHERE id = ?",
+      [id]
+    );
+    if (result.affectedRows > 0) {
+      res.send({ success: true, message: "Book stock status toggled" });
+    } else {
+      res.status(404).send({ success: false, message: "Book not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ success: false, message: "Failed to toggle stock status" });
   }
 });
 
@@ -2434,4 +2614,40 @@ app.use("/pdfs", express.static(path.join(__dirname, "pdfs")));
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
+});
+
+// Get bookmarks for a user
+app.get("/api/bookmarks", async (req, res) => {
+  const { uid } = req.query;
+
+  if (!uid) {
+    return res.status(400).json({
+      success: false,
+      message: "User ID is required"
+    });
+  }
+
+  try {
+    const [bookmarks] = await pool.query(`
+      SELECT 
+        b.*,
+        j.judgmentCitation as citation
+      FROM bookmarks b
+      LEFT JOIN judgment j ON b.judgmentId = j.judgmentId
+      WHERE b.uid = ?
+      ORDER BY b.created_at DESC
+    `, [uid]);
+
+    res.status(200).json({
+      success: true,
+      bookmarks: bookmarks
+    });
+  } catch (error) {
+    console.error("Error fetching bookmarks:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch bookmarks",
+      error: error.message
+    });
+  }
 });

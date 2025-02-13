@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./CFSidePanel.module.css";
 
-function SidePanel({ setResults, setJudgmentCount, setError }) {
+function SidePanel({ setResults, setJudgmentCount, setError, }) {
   const [section, setSection] = useState('');
   const [subsection, setSubsection] = useState('');
   const [judge, setJudge] = useState('');

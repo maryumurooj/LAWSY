@@ -1,71 +1,225 @@
-/* src/components/SubscriptionTier.module.css */
+/* Page Layout */
+.pageWrapper {
+  width: 100dvw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0 auto;
+  padding: 1.5rem;
+  overflow: auto;
+background-color: #000;
+height: calc(100vh - 12vh);
+font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+;}
 
-/* Container for the tier selection */
-.subscription-container {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items horizontally */
-    padding: 20px; /* Padding around the container */
+
+.cardsWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: nowrap;
+}
+
+/* Card Styles */
+.card {
+  flex: 1;
+  min-width: 280px;
+  max-width: 350px;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Plan Type Specific Styles */
+.Bronze {
+  border-top: 4px solid #cd7f32;
+}
+
+.Silver {
+  border-top: 4px solid #c0c0c0;
+}
+
+.Gold {
+  border-top: 4px solid #ffd700;
+}
+
+/* Most Popular Badge */
+.mostPopular {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: #ff0000;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+/* Card Description */
+.cardDescription h2 {
+  color: #000;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.cardDescription p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* Card Billing */
+.cardBilling {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.price {
+  color: #ff0000;
+  font-size: 2.5rem;
+}
+
+.recurrency {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+/* Card Features */
+.cardFeatures ul {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+.cardFeatures li {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  padding: 0.5rem 0;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.cardFeatures li::before {
+  content: "✓";
+  color: #ff0000;
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+/* Card Action */
+.cardAction {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.cardAction button {
+  width: 100%;
+  padding: 1rem;
+  background: #000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cardAction button:hover {
+  background: #ff0000;
+}
+
+.cardAction button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Features Card */
+.featuresWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.featuresCard {
+  width: 60dvw;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.featuresCard h3 {
+  color: #000;
+  text-align: center;
+}
+
+.featuresCard ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.featuresCard li {
+  padding: 0 2rem;
+  color: #333;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  min-width: 250px;
+}
+.featuresCard li::before {
+  content: "•";
+  color: #ff0000;
+  margin-right: 0.75rem;
+  font-weight: bold;
+}
+
+
+
+/* Add this media query for mobile responsiveness */
+@media (max-width: 640px) {
+  .featuresCard li {
+    flex: 1 1 100%;
   }
-  
-  /* Subscription options layout */
-  .subscription-options {
-    display: flex;
-    justify-content: space-around; /* Distributes space evenly between tiles */
-    width: 100%; /* Full width */
-    margin-bottom: 20px; /* Margin below subscription options */
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .cardsWrapper {
+    flex-wrap: wrap;
   }
-  
-  /* Individual tier tile styles */
-  .tier-tile {
-    background-color: #fff; /* White background */
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    padding: 20px; /* Inner padding */
-    text-align: center; /* Centered text */
-    width: 250px; /* Fixed width for the tiles */
-    transition: transform 0.3s, box-shadow 0.3s; /* Animation for hover effect */
-    cursor: pointer; /* Pointer cursor for hover */
+
+  .card {
+    flex: 1 1 calc(50% - 2rem);
   }
-  
-  /* Hover effect for tiles */
-  .tier-tile:hover {
-    transform: translateY(-5px); /* Slightly raise the tile */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Increase shadow */
+}
+
+@media (max-width: 768px) {
+  .cardsWrapper {
+    flex-direction: column;
+    align-items: center;
   }
-  
-  /* Selected tile style */
-  .selected {
-    border: 2px solid #dc3a04; /* Highlight border for selected tile */
+
+  .card {
+    width: 100%;
+    max-width: 400px;
   }
-  
-  /* Title styles */
-  .tile-content h2 {
-    font-size: 1.5rem; /* Title font size */
-    margin: 0 0 10px; /* Bottom margin */
-    color: #333; /* Dark text color */
-  }
-  
-  /* Description styles */
-  .tile-content p {
-    font-size: 1rem; /* Description font size */
-    color: #777; /* Lighter text color */
-  }
-  
-  /* Submit button styles */
-  button {
-    background-color: #dc3a04; /* Button background */
-    color: #fff; /* Button text color */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    padding: 10px 20px; /* Padding for button */
-    cursor: pointer; /* Pointer on hover */
-    font-size: 1rem; /* Button font size */
-    transition: background-color 0.3s; /* Button hover transition */
-  }
-  
-  /* Button hover effect */
-  button:hover {
-    background-color: #c72a00; /* Darker shade on hover */
-  }
-  
+}

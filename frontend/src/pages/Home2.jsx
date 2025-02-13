@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styles from "./Home2.module.css";
+import styles from "./Home.module.css";
 import SupremeCourt from "../assets/Supremecourt.png";
 import HighCourtPhoto from "../assets/Highcourt.png";
 import image8 from "../assets/image8.png";
@@ -11,45 +11,113 @@ import image11 from "../assets/image11.png";
 import { Button, Container, Row, Col } from "react-bootstrap";
 import { useAuth } from "./../services/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Loader from "../components/Loaders/Loader";
 import { Spinner } from "react-bootstrap";
+import axios from "axios"; // Install axios if not already done (npm install axios)
+import book13 from "../assets/Books/book1.jpg";
+import book14 from "../assets/Books/book2.jpg";
+import book15 from "../assets/Books/book3.jpg";
+import book16 from "../assets/Books/book4.jpg";
+import book11 from "../assets/Books/book11.jpg";
+
+
 
 const books = [
-  {
-    src: image8,
-    alt: "Book 1",
-    title: "First Edition",
-    author: "Author Name",
-    edition: "Edition 1",
-    price: "",
-  },
-  {
-    src: image10,
-    alt: "Book 2",
-    title: "second Edition",
-    author: "Author Name",
-    edition: "Edition 2",
-    price: "",
-  },
-  {
-    src: image11,
-    alt: "Book 3",
-    title: "Third Edition",
-    author: "Author Name",
-    edition: "Edition 3",
-    price: "",
-  },
-  {
-    src: image8,
-    alt: "Book 4",
-    title: "Forth Edition",
-    author: "Author Name",
-    edition: "Edition 4",
-    price: "",
-  },
+  
+
+
+{
+  src: book13,
+  alt: "ALD Volume 3",
+  title: "Major Criminal Acts",
+  author: "Andhra Legal Decisions",
+  edition: "2025 Edition",
+  price: "₹2595",
+},
+{
+  src: book14,
+  alt: "ALD Volume 4",
+  title: "Yearly Digest 2024",
+  author: "Andhra Legal Decisions",
+  edition: "2025 Edition",
+  price: "₹3995",
+},
+{
+  src: book15,
+  alt: "ALD Volume 5",
+  title: "Bare Act",
+  author: "Andhra Legal Decisions",
+  edition: "2025 Edition",
+  price: "₹100",
+},
+{
+  src: book16,
+  alt: "ALD Volume 6",
+  title: "Premium Binding Court Pocket",
+  author: "Andhra Legal Decisions",
+  edition: "2025 Edition",
+  price: "₹720",
+},
+{
+  src: book11,
+  alt: "ALD Volume 11",
+  title: "Domestic Artibution",
+  author: "Andhra Legal Decisions",
+  edition: "2025",
+  price: "₹3995",
+},
+
 ];
 
 function Home() {
+  
+  const textRef = useRef(null); // Ref for the text element
+  const box4Ref = useRef(null); // Ref for box4
+
+  // Function to truncate text
+  const truncateText = (element, maxHeight) => {
+    const originalText = element.innerText;
+    let truncatedText = originalText;
+
+    // Temporarily remove ellipsis to measure the actual text height
+    element.innerText = truncatedText;
+
+    // Check if the text overflows the container
+    while (element.scrollHeight > maxHeight && truncatedText.length > 0) {
+      // Remove the last word
+      truncatedText = truncatedText.replace(/\s+\S*$/, "");
+      element.innerText = truncatedText + "...";
+    }
+  };
+
+  // Run the truncation function on mount and window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (box4Ref.current && textRef.current) {
+        // Calculate available space for the text
+        const box4Height = box4Ref.current.clientHeight;
+        const otherContentHeight = Array.from(box4Ref.current.children)
+          .filter((child) => child !== textRef.current)
+          .reduce((sum, child) => sum + child.clientHeight, 0);
+
+        const availableHeight = box4Height - otherContentHeight;
+
+        // Truncate the text if it exceeds the available height
+        truncateText(textRef.current, availableHeight);
+      }
+    };
+
+    // Initial truncation
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const { user, subscriptionStatus } = useAuth();
   const navigate = useNavigate();
 
@@ -76,7 +144,7 @@ function Home() {
     const fetchJudgments = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/latest-judgments"
+          "http://61.246.67.74:4000/api/latest-judgments"
         );
         const data = await response.json();
         setJudgments(data);
@@ -103,7 +171,7 @@ function Home() {
   };
 
   const section2Ref = useRef(null); // Reference for Section 2
-  
+
   useEffect(() => {
     const observerOptions = {
       threshold: 0.2, // Trigger when 20% of the target is visible
@@ -142,94 +210,166 @@ function Home() {
     fetchData();
   }, []);
 
+  //Marquee
+  const [currentContent, setCurrentContent] = useState("");
+  const [newContent, setNewContent] = useState("");
+  const [formattedDate, setFormattedDate] = useState("");
+
+  useEffect(() => {
+    fetchCurrentContent();
+  }, []);
+
+  const fetchCurrentContent = async () => {
+    try {
+      const response = await axios.get("http://61.246.67.74:4000/api/marquee");
+      if (response.data.success) {
+        setCurrentContent(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCitationClick = (citation) => {
+   if (citation){
+    localStorage.setItem("referredCitation", citation);
+   }
+   navigate("/index");
+  };
+
+
+ 
+  const booksWrapperRef = useRef(null);
+  let scrollInterval = useRef(null);
+
+  useEffect(() => {
+    const booksWrapper = booksWrapperRef.current;
+    if (!booksWrapper) return;
+
+    let scrollSpeed = 1; // Adjust scroll speed
+    let scrollDirection = 1; // 1 for right, -1 for left
+
+    const startScrolling = () => {
+      scrollInterval.current = setInterval(() => {
+        booksWrapper.scrollLeft += scrollSpeed * scrollDirection;
+
+        // Loop effect when reaching end
+        if (booksWrapper.scrollLeft >= booksWrapper.scrollWidth / 2) {
+          booksWrapper.scrollLeft = 0;
+        }
+      }, 30);
+    };
+
+    const stopScrolling = () => {
+      clearInterval(scrollInterval.current);
+    };
+
+    // Start scrolling on mount
+    startScrolling();
+
+    // Pause on hover, resume on leave
+    booksWrapper.addEventListener("mouseenter", stopScrolling);
+    booksWrapper.addEventListener("mouseleave", startScrolling);
+
+    return () => {
+      clearInterval(scrollInterval.current); // Cleanup on unmount
+      booksWrapper.removeEventListener("mouseenter", stopScrolling);
+      booksWrapper.removeEventListener("mouseleave", startScrolling);
+    };
+  }, []);
+
   return (
     <div className={styles.home}>
       <div class={styles.marqueecontainer}>
-  <div class={styles.marquee}>
-    <span>🔥 Flash Sale: 50% off on selected items! | 🎉 New Year Offers: Don't miss out! | 📢 Latest Updates: Check out our blog for more info!</span>
-  </div>
-</div>
+        <div class={styles.marquee}>
+          <span>
+            {" "}
+            {currentContent}
+            {" "}
+          </span>
+        </div>
+      </div>
 
       <div className={styles.layer1}></div>
-      
+
       <section
         ref={section2Ref}
         className={`${styles.section2} ${styles.sectionscroll}`}
       >
-        <div className={styles.WelcomeContainer}>
-          {" "}
-          {/* New container for Welcome phrase */}
-          <h1 className={styles.Welcome}>
-            Welcome{user ? `, ${user.displayName || "User"}` : " to ALD ONLINE✌️"}
-          </h1>
-        </div>
+        
         {/* Rest of Section 2 content */}
         <div className={styles.content}>
-        <div className={styles.LeftCol}>
-          <div
-            ref={(el) => (boxesRef.current[1] = el)}
-            className={`${styles.box3} ${boxVisible ? styles.boxVisible : ""}`}
-          >
-            <h2>Latest Judgments</h2>
-            <div className={styles.judgmentsList}>
-              {judgments.map((judgment) => (
-                <div key={judgment.judgmentId} className={styles.judgment}>
-                  <p className={styles.topline}>
-                    <span className={styles.citation}>
-                      {judgment.newCitation || judgment.judgmentCitation}
-                    </span>
-                    <p className={styles.judges}>{judgment.judgmentJudges}</p>
-                  </p>
-                  <p className={styles.bottomline}>
-                    <span className={styles.parties}>
-                      {" "}
-                      {judgment.judgmentParties}
-                    </span>
-                    <span className={styles.doj}>{judgment.formattedDOJ}</span>
-                  </p>
-                </div>
-              ))}
+          <div className={styles.LeftCol}>
+            <div
+              ref={(el) => (boxesRef.current[1] = el)}
+              className={`${styles.box3} ${
+                boxVisible ? styles.boxVisible : ""
+              }`}
+            >
+                          <h2>Latest Judgments</h2>
+              <div className={styles.judgmentsList}>
+                {judgments.map((judgment) => (
+                  <div
+                    key={judgment.judgmentId}
+                    className={styles.judgment}
+                    onClick={() => handleCitationClick(judgment.newCitation || judgment.judgmentCitation)} // Box-wide click handler
+                    style={{ cursor: "pointer" }} // Ensure the whole box is clickable
+                  >
+                    <p className={styles.topline}>
+                      <span className={styles.citation}>
+                        {judgment.newCitation || judgment.judgmentCitation}
+                      </span>
+                      <p className={styles.judges}>{judgment.judgmentJudges}</p>
+                    </p>
+                    <p className={styles.bottomline}>
+                      <span className={styles.parties}>{judgment.judgmentParties}</span>
+                      <span className={styles.doj}>{judgment.formattedDOJ}</span>
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-        <div className={styles.RightCol}>
-          <div
-            ref={(el) => (boxesRef.current[2] = el)}
-            className={`${styles.box2} ${boxVisible ? styles.boxVisible : ""}`}
-          >
-            <div className={styles.homeSlider}>
-              <Slider {...settings}>
-                <div>
-                  <img
-                    className={styles.image}
-                    src={SupremeCourt}
-                    alt="Supreme Court"
-                  />
-                </div>
-                <div>
-                  <img
-                    className={styles.image}
-                    src={HighCourtPhoto}
-                    alt="High Court of Andhra Pradesh"
-                  />
-                </div>
-              </Slider>
+          <div className={styles.RightCol}>
+            <div
+              ref={(el) => (boxesRef.current[2] = el)}
+              className={`${styles.box2} ${
+                boxVisible ? styles.boxVisible : ""
+              }`}
+            >
+              
+                <Slider {...settings}>
+                  <div className={styles.imgbox}>
+                    <img
+                      className={styles.image}
+                      src={SupremeCourt}
+                      alt="Supreme Court"
+                    />
+                  </div>
+                  <div className={styles.imgbox}>
+                    <img
+                      className={styles.image}
+                      src={HighCourtPhoto}
+                      alt="High Court of Andhra Pradesh"
+                    />
+                  </div>
+                </Slider>
+              
+            </div>
+            <div
+             ref={box4Ref}
+              className={`${styles.box4} ${
+                boxVisible ? styles.boxVisible : ""
+              }`}
+            >
+              <h2 className="mb-0">Discover Our Resources</h2>
+              <p ref={(el) => (textRef.current = el)}>
+              ALD Online is a user-friendly and efficient legal research platform designed for busy lawyers, the Bench, and the Bar. It provides fast and accurate results, 
+              helps track binding authorities, assists in case law research, and verifies the current status of judgments. Start your free trial today!{" "}<br/>
+              </p>
+              <Button variant="light">Start Now</Button>
             </div>
           </div>
-          <div
-            ref={(el) => (boxesRef.current[3] = el)}
-            className={`${styles.box4} ${boxVisible ? styles.boxVisible : ""}`}
-          >
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=No.%2021,%20Ald%20Publications,%201-990,%20Ghansi%20Bazaar,%20Hyderabad,%20Telangana%20500066+(ALD%20Publications)&amp;t=&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-              title="ALD Publications Location"
-            ></iframe>
-          </div>
-          </div>
-          
-          
         </div>
       </section>
 
@@ -243,60 +383,41 @@ function Home() {
             />
           </svg>
         </div>
-        <div className={styles.box5}>
-          <h2 className="mb-3">Discover Our Subscription Plans</h2>
-          <p className={styles.pricepara}>
-            Since 1995, <strong>Andhra Legal Decisions</strong> has been a
-            trusted companion for the legal community, providing precise,
-            well-indexed, and reader-friendly legal reporting. From print to
-            digital, we’ve grown alongside your needs—offering comprehensive
-            coverage of Civil, Criminal, and Statutory law.
-          </p>
-          <ul className={styles.pricepara}>
-            <li>
-              Access <strong>thousands of judgments</strong> from 1995 onward,
-              complete with headnotes and indexing.
-            </li>
-            <li>
-              Enjoy <strong>advanced search features</strong> tailored for busy
-              legal professionals: search by topic, statute, case name, judge,
-              and more.
-            </li>
-            <li>
-              <strong>Hyperlinked citations</strong>, bookmarking, and easy
-              navigation make legal research seamless.
-            </li>
-          </ul>
-          <div className="text-center mt-4">
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                const pricingSection =
-                  document.getElementById("pricing-section");
-                if (pricingSection) {
-                  pricingSection.scrollIntoView({ behavior: "smooth" });
-                }
-              }}
-            >
-              View Pricing Plans
-            </button>
-          </div>
-        </div>
+
+        
         <div className={styles.box6}>
-          <div className={styles.booksWrapper}>
-            <h2>Our Editions</h2>
-            <div className={styles.booksContainer}>
+          <h2>Latest Publication</h2>
+          <div ref={booksWrapperRef} className={styles.booksWrapper}>
+          <div className={styles.booksContainer}>
+              {/* First set of books */}
               {books.map((book, index) => (
-                <div key={index} className={styles.bookCard}>
+                <div key={`first-${index}`} className={styles.bookCard}>
                   <img
                     src={book.src}
                     alt={book.alt}
                     className={styles.bookImage}
                   />
                   <div className={styles.bookDetails}>
-                    <h3 className={styles.bookTitle}>{book.title}</h3>
-                    <p className={styles.bookAuthor}>{book.author}</p>
-                    <p className={styles.bookEdition}>{book.edition}</p>
+                  <h3 className={styles.bookAuthor}>{book.title}</h3>
+                    <h3 className={styles.bookAuthor}>{book.edition}</h3>
+                    <h3 className={styles.bookAuthor}>{book.price}</h3>
+                  </div>
+                </div>
+              ))}
+              {/* Duplicate set for seamless loop */}
+              {books.map((book, index) => (
+                <div key={`second-${index}`} className={styles.bookCard}>
+                  <img
+                    src={book.src}
+                    alt={book.alt}
+                    className={styles.bookImage}
+                  />
+                  <div className={styles.bookDetails}>
+                   
+                    <h3 className={styles.bookAuthor}>{book.title}</h3>
+                    <h3 className={styles.bookAuthor}>{book.edition}</h3>
+                    <h3 className={styles.bookAuthor}>{book.price}</h3>
+                    
                   </div>
                 </div>
               ))}

@@ -19,12 +19,64 @@ const UsersTable = () => {
   }); // State to store filter values
   const [selectedUsers, setSelectedUsers] = useState([]); // State to manage selected users for bulk editing
 
+
+  //print
   const [printData, setPrintData] = useState(null); // State to hold the data for printing
-
-
   const printInProgress = useRef(false);
   const [loading, setLoading] = useState(false);
   const [downloadKey, setDownloadKey] = useState(null);
+  const printTable = async () => {
+    if (printInProgress.current) {
+      return; // Prevent multiple print actions simultaneously
+    }
+  
+    printInProgress.current = true;
+    setLoading(true);
+  
+    // Format the user data for printing (similar to the formattedData in Project A)
+    const formattedUserData = filteredUsers.map((user) => ({
+      ...user,
+      creationDate: formatDate(user.creationDate) // Format the date if necessary
+    }));
+  
+    setLoading(false);
+  
+    const timestamp = new Date().toLocaleString(); // Generate current timestamp
+    setDownloadKey(timestamp); // Update the state to trigger re-render
+  
+    const existingPrintContainer = document.getElementById('print-container');
+    if (existingPrintContainer) {
+      existingPrintContainer.remove(); // Remove existing print container
+    }
+  
+    const printContainer = document.createElement('div');
+    printContainer.id = 'print-container';
+    document.body.appendChild(printContainer);
+  
+    const MyDocumentComponent = (
+      <MyDocument data={formattedUserData} timestamp={timestamp} />
+    );
+  
+    // Generate the PDF and open it in a new tab for preview
+    const handlePreview = async () => {
+      const pdfBlob = await pdf(MyDocumentComponent).toBlob();
+      const url = URL.createObjectURL(pdfBlob);
+      window.open(url); // Open the PDF in a new tab for preview
+  
+      setTimeout(() => {
+        if (printContainer.parentNode) {
+          document.body.removeChild(printContainer);
+        }
+        // Reset state variables after printing
+        setLoading(false);
+        setDownloadKey(null);
+        printInProgress.current = false; // Allow new print actions
+      }, 1000); // Adjust delay as needed
+    };
+  
+    handlePreview();
+  };
+  
 
 
   // Function to fetch users from Firestore
@@ -236,58 +288,7 @@ const bulkToggleRoleToUser = async () => {
     }
   };
 
-  const printTable = async () => {
-    if (printInProgress.current) {
-      return; // Prevent multiple print actions simultaneously
-    }
-  
-    printInProgress.current = true;
-    setLoading(true);
-  
-    // Format the user data for printing (similar to the formattedData in Project A)
-    const formattedUserData = filteredUsers.map((user) => ({
-      ...user,
-      creationDate: formatDate(user.creationDate) // Format the date if necessary
-    }));
-  
-    setLoading(false);
-  
-    const timestamp = new Date().toLocaleString(); // Generate current timestamp
-    setDownloadKey(timestamp); // Update the state to trigger re-render
-  
-    const existingPrintContainer = document.getElementById('print-container');
-    if (existingPrintContainer) {
-      existingPrintContainer.remove(); // Remove existing print container
-    }
-  
-    const printContainer = document.createElement('div');
-    printContainer.id = 'print-container';
-    document.body.appendChild(printContainer);
-  
-    const MyDocumentComponent = (
-      <MyDocument data={formattedUserData} timestamp={timestamp} />
-    );
-  
-    // Generate the PDF and open it in a new tab for preview
-    const handlePreview = async () => {
-      const pdfBlob = await pdf(MyDocumentComponent).toBlob();
-      const url = URL.createObjectURL(pdfBlob);
-      window.open(url); // Open the PDF in a new tab for preview
-  
-      setTimeout(() => {
-        if (printContainer.parentNode) {
-          document.body.removeChild(printContainer);
-        }
-        // Reset state variables after printing
-        setLoading(false);
-        setDownloadKey(null);
-        printInProgress.current = false; // Allow new print actions
-      }, 1000); // Adjust delay as needed
-    };
-  
-    handlePreview();
-  };
-  
+
 
 
   return (

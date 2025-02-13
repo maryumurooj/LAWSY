@@ -7,10 +7,21 @@
   width: 100%;
   justify-content: space-between;
   gap: 40px;
-  z-index: 100;
-  min-height: 10vh;
+  z-index: 6001; /* Ensure dropdown appears above other content */
+  min-height: 7vh;
 }
-
+.pfpusername{
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.displayname{
+  margin-right: 20px;
+  font-size: 1.3rem;
+  white-space: nowrap;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.567);
+}
 .titlelogo {
   display: flex;
   gap: 15px;
@@ -18,15 +29,15 @@
 }
 
 .logoImage {
-  height: 60px;
+  height: 5vh;
 }
 
 .titleImage {
-  height: 40px;
+  height: 3vh;
 }
 
 .headerComponentInner {
-  width: 100%;
+  width: 55%;
 }
 
 .loginButton {
@@ -52,7 +63,7 @@
 }
 
 .profilePicture {
-  width: 50px;
+  width: 5vh;
   border-radius: 50%;
 }
 
@@ -69,7 +80,7 @@
 }
 
 /* Media Query to toggle display based on screen size */
-@media (max-width: 768px) { /* Adjust the breakpoint as needed */
+@media (max-width: 992px) { /* Adjust the breakpoint as needed */
   .desktopOnly {
     display: none; /* Hide Navbar on smaller screens */
   }

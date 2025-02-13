@@ -14,6 +14,7 @@ import styles from './Auth.module.css';
 import LoginPageImage from '../../assets/bookcase.jpg';
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -23,6 +24,7 @@ const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [user, setUser] = useState(null);
   const provider = new GoogleAuthProvider();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
@@ -70,25 +72,6 @@ const Auth = () => {
           subscriptionStatus: 'inactive',
         });
       }
-
-      // Sync with MySQL via backend API
-      const response = await fetch('http://localhost:3000/sync-user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            uid: user.uid,
-            username: username || user.displayName || 'Anonymous',
-            email: user.email,
-        }),
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to sync with MySQL');
-    }
-
-    console.log('User data synced with MySQL');
-
-
     } catch (error) {
       console.error('Error saving user info:', error.message);
     }
@@ -105,9 +88,11 @@ const Auth = () => {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await saveUserInfo(userCredential.user);
         alert('User signed up successfully');
+        navigate('/');
       } else {
         await signInWithEmailAndPassword(auth, email, password);
         alert('User signed in successfully');
+        navigate('/');
       }
     } catch (error) {
       alert(error.message);
@@ -132,6 +117,7 @@ const Auth = () => {
       }
 
       alert('User signed in with Google');
+      navigate('/');
     } catch (error) {
       alert(error.message);
     }
@@ -152,6 +138,8 @@ const Auth = () => {
       style={{
         backgroundImage: `url(${LoginPageImage})`,
         backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -170,7 +158,6 @@ const Auth = () => {
 
           {isSignUp && (
             <div className={styles.inputContainer}>
-              <FaUser className={styles.LOGicon} />
               <input
                 type="text"
                 placeholder="Username"
@@ -182,7 +169,6 @@ const Auth = () => {
           )}
 
           <div className={styles.inputContainer}>
-            <FaUser className={styles.LOGicon} />
             <input
               type="email"
               placeholder="Email"
@@ -192,7 +178,6 @@ const Auth = () => {
             />
           </div>
           <div className={styles.inputContainer}>
-            <RiLockPasswordFill className={styles.LOGicon} />
             <input
               type="password"
               placeholder="Password"
@@ -203,7 +188,6 @@ const Auth = () => {
           </div>
           {isSignUp && (
             <div className={styles.inputContainer}>
-              <RiLockPasswordFill className={styles.LOGicon} />
               <input
                 type="password"
                 placeholder="Re-type Password"
@@ -219,12 +203,18 @@ const Auth = () => {
           </button>
 
           <button className={styles.googleBtn} onClick={handleGoogleAuth}>
-            <img className={styles.icon}  alt="Google Icon" />
             Sign In with Google
           </button>
 
           <p className={styles.switchAuth} onClick={() => setIsSignUp(!isSignUp)}>
             {isSignUp ? 'Already have an account? Log In' : "Don't have an account? Sign Up"}
+          </p>
+
+          <p className={styles.policyText}>
+            By signing in, you agree to our{' '}
+            <a href="/TermsAndConditions" rel="noopener noreferrer">Terms and Conditions</a>,{' '}
+            <a href="/privacypolicy"  target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and{' '}
+            <a href="/refund&cancellationpolicy" target="_blank" rel="noopener noreferrer">Refund and Cancellation Policy</a>.
           </p>
         </div>
       )}

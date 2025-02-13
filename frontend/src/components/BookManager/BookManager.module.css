@@ -1,0 +1,19 @@
+
+
+button {
+  height: 40px; /* Reduced height */
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #dc3a04;
+  font-size: 16px; /* Smaller font size */
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+display: block;
+margin: 0 auto;
+}
+
+form button:hover {
+  background-color: #000000;
+}

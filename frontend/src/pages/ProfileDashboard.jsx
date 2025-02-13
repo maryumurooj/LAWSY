@@ -1,50 +1,52 @@
 import React, { useState } from "react";
-import UserTable from "../components/AdminData/UserTable"; // Import the UserTable component
-import SubscriptionTable from "../components/AdminData/SubscriptionTable"; // Import the SubscriptionTable component
-import BillingTable from "../components/AdminData/BillingTable"; // Import the BillingTable component
-import styles from "./ProfileDashboard.module.css"; // Import CSS for styling
+import styles from "./ProfileDashboard.module.css";
+import { useAuth } from "./../services/AuthContext";
+// Import MUI components
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import SettingsIcon from "@mui/icons-material/Settings";
+import PersonIcon from "@mui/icons-material/Person";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import NoteIcon from "@mui/icons-material/Note";
+import LogoutIcon from "@mui/icons-material/Logout";
+import Box from "@mui/material/Box";
+
+// Import your components
 import Profile from "../components/Authentication/Profile";
-import LJ from "./LJReplace";
 import Bookmark from "./Bookmark";
-import Notes from "./Notes.jsx"
-import { useAuth } from './../services/AuthContext';
+import Notes from "./Notes.jsx";
 
-
-
-const AdminDashboard = () => {
+const ProfileDashboard = () => {
   const [activeTab, setActiveTab] = useState("users");
-  const { user, subscriptionStatus } = useAuth();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const { user } = useAuth();
 
-
-  // Function to handle tab switching
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  // Function to render different content based on the active tab
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const menuItems = [
+    { id: "settings", icon: <SettingsIcon />, text: "Settings" },
+    { id: "profile", icon: <PersonIcon />, text: "Profile" },
+    { id: "Bookmark", icon: <BookmarkIcon />, text: "Bookmarks" },
+    { id: "Notes", icon: <NoteIcon />, text: "Notes" },
+    { id: "logout", icon: <LogoutIcon />, text: "Logout" },
+  ];
+
   const renderFormContent = () => {
     switch (activeTab) {
-       // Render BillingTable when "billing" tab is active
       case "Notes":
-            return <Notes uid={user.uid} />;
+        return <Notes uid={user.uid} />;
       case "profile":
-            return <Profile />; 
-      case "LJ":
-            return <LJ />;
+        return <Profile />;
       case "Bookmark":
-              return <Bookmark />; 
-        case "settings":
-    
-        return (
-          <div>
-            <form>
-              <label>Change Password:</label>
-              <input type="password" placeholder="Enter new password" />
-              <br />
-              <button type="submit">Update Settings</button>
-            </form>
-          </div>
-        );
+        return <Bookmark />;
       default:
         return <p>Select a form from the sidebar.</p>;
     }
@@ -52,59 +54,48 @@ const AdminDashboard = () => {
 
   return (
     <div className={styles.dashboardContainer}>
-      {/* Sidebar */}
-      <div className={styles.sidebar}>
-        <div className={styles.admin}>
-          <div>Admin</div>
-        </div>
-        <ul className={styles.contents}>
-          <li
-            className={activeTab === "settings" ? styles.active : ""}
-            onClick={() => handleTabChange("settings")}
-          >
-            Settings
-          </li>
-          <li
-            className={activeTab === "profile" ? styles.active : ""}
-            onClick={() => handleTabChange("profile")}
-          >
-            Profile
-          </li>
-      
-          <li
-            className={activeTab === "Bookmark" ? styles.active : ""}
-            onClick={() => handleTabChange("Bookmark")}
-          >
-            BookMarks
-          </li>
-          <li
-            className={activeTab === "LJ" ? styles.active : ""}
-            onClick={() => handleTabChange("LJ")}
-          >
-            LJ
-          </li>
+      <Box
+        component="nav"
+        className={`${styles.sidebar} ${
+          isSidebarOpen ? styles.sidebarOpen : styles.sidebarClosed
+        }`}
+      >
+        <IconButton
+          color="inherit"
+          aria-label="toggle sidebar"
+          onClick={toggleSidebar}
+          className={styles.menuButton}
+        >
+          <MenuIcon />
+        </IconButton>
 
-          <li
-            className={activeTab === "Notes" ? styles.active : ""}
-            onClick={() => handleTabChange("Notes")}
-          >
-            Notes
-          </li>
-        </ul>
-      </div>
+        <List>
+          {menuItems.map((item) => (
+            <ListItem
+              key={item.id}
+              onClick={() => handleTabChange(item.id)}
+              className={`${styles.listItem} ${
+                activeTab === item.id ? styles.listItemActive : ""
+              }`}
+            >
+              {item.icon}
+              <span
+                className={`${styles.listItemText} ${
+                  !isSidebarOpen && styles.hidden
+                }`}
+              >
+                {item.text}
+              </span>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
 
-      {/* Main content area */}
       <div className={styles.mainContent}>
-        {activeTab === "users"}
-      </div>
-
-      {/* Form container beside the sidebar */}
-      <div className={styles.formContainer}>
-        {/* Dynamically render content based on the active tab */}
-        {renderFormContent()}
+        <div className={styles.formContainer}>{renderFormContent()}</div>
       </div>
     </div>
   );
 };
 
-export default AdminDashboard;
+export default ProfileDashboard;

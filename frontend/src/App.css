@@ -1,22 +1,28 @@
-.html, .body, #root {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+.html,
+.body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .App {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100vh;
 }
 
 .Content {
-    flex: 1; /* This allows the content to expand and fill remaining space */
- 
-   
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 @media (max-width: 768px) {
-    
+  .App {
+    height: auto;
+    min-height: 100vh;
+  }
 }

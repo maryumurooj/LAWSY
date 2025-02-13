@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { db } from '../../services/firebaseConfig'; // Firestore config
 import { collection, query, onSnapshot, updateDoc, doc } from 'firebase/firestore'; // Firestore methods
 import styles from './BillingTable.module.css'; // BillingTable styles
+import { pdf } from '@react-pdf/renderer'; // PDF generation
+import BillingPrintComp from '../PrintComps/BillingPrintComp'; // Your Billing Print Component
+
 
 const BillingTable = () => {
   // State to hold billing data
@@ -133,6 +136,38 @@ const BillingTable = () => {
     }
   };
 
+  //print
+  const printInProgress = useRef(false);
+  const [loading, setLoading] = useState(false);
+
+
+  const printBillingData = async () => {
+    if (printInProgress.current) return;
+
+    printInProgress.current = true;
+    setLoading(true);
+
+    const formattedBillingData = filteredData.map((bill) => ({
+      ...bill,
+      creationDate: new Date(bill.creationDate).toLocaleDateString(),
+    }));
+
+    setLoading(false);
+    const timestamp = new Date().toLocaleString();
+
+    const MyDocumentComponent = (
+      <BillingPrintComp data={formattedBillingData} timestamp={timestamp} />
+    );
+
+    const pdfBlob = await pdf(MyDocumentComponent).toBlob();
+    const url = URL.createObjectURL(pdfBlob);
+    window.open(url);
+
+    setLoading(false);
+    printInProgress.current = false;
+  };
+
+
   return (
     <div className={styles.billingTableContainer}>
       <h2>Billing Information Table</h2>
@@ -140,6 +175,14 @@ const BillingTable = () => {
       {/* Filtering Input Fields */}
       <div className={styles.filterContainer}>
         {/* Add filtering inputs here (same as before) */}
+        <button
+        className={styles.printButton}
+        onClick={printBillingData}
+        disabled={filteredData.length === 0}
+      >
+        Print Billing Data
+      </button>
+      
         <input
           type="text"
           className={styles.inputField}

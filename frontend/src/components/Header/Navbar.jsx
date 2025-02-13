@@ -17,47 +17,40 @@ const Navbar = () => {
 
   return (
     <div className={styles.navBarDefault}>
+
       <div className={styles.frame}>
+      <button
+          onClick={handleNavigation("/home")}
+          className={getClassName("/home")}
+        > HOME        </button>
         <div className={styles.dropdown}>
-          <button onClick={handleNavigation("/")} className={getClassName("/")}>
-            HOME
+          <button className={getClassName("/")}>
+            WEB EDITION
           </button>
           <div className={styles.dropdownContent}>
-            <button onClick={handleNavigation("/about")}>ABOUT</button>
-            <button onClick={handleNavigation("/contact")}>CONTACT</button>
-            <button onClick={handleNavigation("/help")}>HELP</button>
-            <button onClick={handleNavigation("/FAQ")}>FAQ</button>
+            <button onClick={handleNavigation("/index")}
+          className={getClassName("/index")}>INDEX</button>
+            <button onClick={handleNavigation("/casefinder")}
+          className={getClassName("/casefinder")}>CASE FINDER</button>
+            <button onClick={handleNavigation("/statutes")}
+          className={getClassName("/statutes")}>STATUTES</button>
+            <button  onClick={handleNavigation("/articles")}
+          className={getClassName("/articles")}>ARTICLES</button>
+            <button onClick={handleNavigation("/judges-profile")}
+          className={getClassName("/judges-profile")}>JUDGES</button>
           </div>
         </div>
         <button
-          onClick={handleNavigation("/index")}
-          className={getClassName("/index")}
+          onClick={handleNavigation("/profiledashboard")}
+          className={getClassName("/profiledashboard")}
         >
-          INDEX
+          DASHBOARD
         </button>
         <button
-          onClick={handleNavigation("/casefinder")}
-          className={getClassName("/casefinder")}
+          onClick={handleNavigation("/subscription-tier")}
+          className={getClassName("/subscription-tier")}
         >
-          CASE FINDER
-        </button>
-        <button
-          onClick={handleNavigation("/statutes")}
-          className={getClassName("/statutes")}
-        >
-          STATUTES
-        </button>
-        <button
-          onClick={handleNavigation("/articles")}
-          className={getClassName("/articles")}
-        >
-          ARTICLES
-        </button>
-        <button
-          onClick={handleNavigation("/judges-profile")}
-          className={getClassName("/judges-profile")}
-        >
-          JUDGES PROFILE
+          PLANS
         </button>
         
       </div>

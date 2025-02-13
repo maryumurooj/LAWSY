@@ -42,6 +42,7 @@ import Home3 from "./pages/Home3.jsx"; // Ensure Home1.jsx is correctly imported
 
   import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthProvider } from './services/AuthContext'
+import axios from "axios"; // Install axios if not already done (npm install axios)
 import "./App.css";
 
 const App = () => {

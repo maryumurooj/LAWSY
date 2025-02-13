@@ -9,7 +9,7 @@ const Ham = ({ showMenu, onToggleMenu }) => {
   const handleNavigation = (path) => () => {
     navigate(path);
     // Close the menu after navigation on smaller screens
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 992) {
       onToggleMenu();
     }
   };

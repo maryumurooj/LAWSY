@@ -5,7 +5,7 @@ import HighlightWords from 'react-highlight-words';
 
 
 const SidePanel = ({ setResults, setJudgmentCount, setError, setSearchTerms, onSearch, fullCitation,
-  setFullCitation, onClear }) => {
+  setFullCitation, onClear, setIsLoading}) => {
 
   const [legislationName, setLegislationName] = useState('');
   const [subsection, setSubsection] = useState('');
@@ -53,6 +53,7 @@ const SidePanel = ({ setResults, setJudgmentCount, setError, setSearchTerms, onS
   const [filteredEquivalents, setFilteredEquivalents] = useState([]);  // Added from code 1
   const [citation, setCitation] = useState("");
   const [completeCitation, setCompleteCitation] = useState("");
+  
 
   
   const toggleIndex = (index) => {
@@ -61,6 +62,7 @@ const SidePanel = ({ setResults, setJudgmentCount, setError, setSearchTerms, onS
 
 const handleSearch = async () => {
     try {
+      setIsLoading(true);
         const response = await fetch(`http://localhost:3000/api/search?legislationName=${legislationName}&section=${section}&subsection=${subsection}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -93,6 +95,7 @@ const handleSearch = async () => {
 
 const handleTopicSearch = async () => {
   try {
+    setIsLoading(true);
     const response = await fetch(
       `http://localhost:3000/api/searchByTopic?topic=${topic}`,
     );
@@ -123,6 +126,8 @@ const handleTopicSearch = async () => {
 
 const handleNominalSearch = async () => {
   try {
+    setIsLoading(true);
+
     const nominalValue = nominal || "";
 
     const response = await fetch(
@@ -153,6 +158,8 @@ const handleNominalSearch = async () => {
 //search by CaseNo
 const handleCaseNoSearch = async (selectedCase) => {
   try {
+    setIsLoading(true);
+
     const caseNoText = selectedCase.judgmentNoText || '';
     const response = await fetch(`http://localhost:3000/api/searchByCaseNo?caseinfo=${caseNoText}`);
     if (!response.ok) {
@@ -178,6 +185,8 @@ const handleCaseNoSelect = (selectedCase) => {
 //search by Advocate
 const handleAdvocateSearch = async () => {
   try {
+    setIsLoading(true);
+
       const advocateNameValue = advocateName || '';
 
       const response = await fetch(`http://localhost:3000/api/searchByAdvocate?advocateName=${advocateNameValue}`);
@@ -203,6 +212,8 @@ const handleAdvocateSearch = async () => {
 //search by Judge
 const handleJudgeSearch = async () => {
   try {
+    setIsLoading(true);
+
       const response = await fetch(`http://localhost:3000/api/searchByJudge?judge=${judge}`);
       if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -226,6 +237,8 @@ const handleJudgeSearch = async () => {
 //Citation search
 const handleCitationSearch = async (selectedCitation) => {
   try {
+    setIsLoading(true);
+
     const CitationText = selectedCitation.judgmentCitation || '';
     const response = await fetch(`http://localhost:3000/api/searchByCitation?CitationText=${CitationText}`);
     if (!response.ok) {
@@ -256,6 +269,8 @@ useEffect(() => {
 //Equals Search
 const handleEquivalentSearch = async (selectedEqual) => {
   try {
+    setIsLoading(true);
+
     const EqualText = selectedEqual.equalCitationText || '';
     const response = await fetch(`http://localhost:3000/api/searchByEquivalent?EqualText=${EqualText}`);
     if (!response.ok) {

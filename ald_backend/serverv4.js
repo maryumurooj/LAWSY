@@ -6,6 +6,9 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import multer from "multer";
 
+import compression from "compression"; // Import the compression middleware
+
+
 const app = express();
 const port = 3000;
 
@@ -30,6 +33,9 @@ pool
   .getConnection()
   .then(() => console.log("Database connected successfully"))
   .catch((err) => console.error("Error connecting to database:", err));
+
+
+  app.use(compression());
 
 // Define existing models
 const Judgment = sequelize.define(
@@ -1486,6 +1492,9 @@ export async function getJudgmentsByMultipleCriteria(
       ...advocateKeywords.map((kw) => `%${kw}%`),
     ];
 
+    console.log("Final Query:", query);
+    console.log("Query Params:", queryParams);
+
     const [rows] = await connection.execute(query, queryParams);
     return rows;
   } catch (error) {
@@ -1621,8 +1630,7 @@ app.get("/api/all-advocate", async (req, res) => {
     advocateName
 FROM 
     advocate
-ORDER BY 
-    advocateName ASC;
+ORDER BY advocateName ASC;
 
 
     `;
@@ -1643,8 +1651,7 @@ app.get("/api/all-judge", async (req, res) => {
    judgeName
 FROM 
     judge
-ORDER BY 
-    judgeName ASC;
+ORDER BY judgeName ASC;
 
 
     `;
@@ -2510,7 +2517,9 @@ const storage = multer.diskStorage({
     cb(null, "uploads/books/"); // Ensure this folder exists
   },
   filename: (req, file, cb) => {
-    const bookName = req.body.book_name ? sanitizeFilename(req.body.book_name) : "unknown";
+    const bookName = req.body.book_name
+      ? sanitizeFilename(req.body.book_name)
+      : "unknown";
     const ext = path.extname(file.originalname);
     cb(null, `${bookName}_${Date.now()}${ext}`); // Append timestamp to avoid duplicates
   },
@@ -2568,7 +2577,8 @@ app.put("/api/books/:id", upload.single("image"), async (req, res) => {
 
     const inStockValue = in_stock === "true" || in_stock === 1 ? 1 : 0; // Ensure correct format
 
-    let query = "UPDATE books SET book_name = ?, edition = ?, price = ?, in_stock = ?";
+    let query =
+      "UPDATE books SET book_name = ?, edition = ?, price = ?, in_stock = ?";
     let params = [book_name, edition, price, inStockValue];
 
     if (req.file) {
@@ -2602,7 +2612,38 @@ app.patch("/api/books/:id/toggle-in-stock", async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send({ success: false, message: "Failed to toggle stock status" });
+    res
+      .status(500)
+      .send({ success: false, message: "Failed to toggle stock status" });
+  }
+});
+
+
+//BUNDLE sidepadle index dropdowns
+app.get("/api/dropdown-data", async (req, res) => {
+  try {
+    const [legislationNames] = await pool.query("SELECT legislationId, legislationName FROM legislation");
+    const [topics] = await pool.query("SELECT topicId, topicName FROM topic ORDER BY topicName ASC");
+    const [judges] = await pool.query("SELECT judgeId, judgeName FROM judge ORDER BY judgeName ASC");
+    const [advocates] = await pool.query("SELECT advocateId, advocateName FROM advocate ORDER BY advocateName ASC");
+    const [nominals] = await pool.query("SELECT distinct judgmentId, judgmentParties FROM judgment ORDER BY judgmentParties ASC");
+    const [caseNos] = await pool.query("SELECT judgmentId, judgmentNoText FROM judgment ORDER BY judgmentNoText ASC");
+    const [citations] = await pool.query("SELECT judgmentId, judgmentCitation FROM judgment");
+    const [equivalents] = await pool.query("SELECT * FROM equalcitation ORDER BY judgmentId ASC");
+
+    res.json({
+      legislationNames,
+      topics,
+      judges,
+      advocates,
+      nominals,
+      caseNos,
+      citations,
+      equivalents,
+    });
+  } catch (error) {
+    console.error("Error fetching dropdown data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -2623,12 +2664,13 @@ app.get("/api/bookmarks", async (req, res) => {
   if (!uid) {
     return res.status(400).json({
       success: false,
-      message: "User ID is required"
+      message: "User ID is required",
     });
   }
 
   try {
-    const [bookmarks] = await pool.query(`
+    const [bookmarks] = await pool.query(
+      `
       SELECT 
         b.*,
         j.judgmentCitation as citation
@@ -2636,18 +2678,20 @@ app.get("/api/bookmarks", async (req, res) => {
       LEFT JOIN judgment j ON b.judgmentId = j.judgmentId
       WHERE b.uid = ?
       ORDER BY b.created_at DESC
-    `, [uid]);
+    `,
+      [uid]
+    );
 
     res.status(200).json({
       success: true,
-      bookmarks: bookmarks
+      bookmarks: bookmarks,
     });
   } catch (error) {
     console.error("Error fetching bookmarks:", error);
     res.status(500).json({
       success: false,
       message: "Failed to fetch bookmarks",
-      error: error.message
+      error: error.message,
     });
   }
 });

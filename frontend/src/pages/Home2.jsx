@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styles from "./Home.module.css";
+import styles from "./Home2.module.css";
 import SupremeCourt from "../assets/Supremecourt.png";
 import HighCourtPhoto from "../assets/Highcourt.png";
 import image8 from "../assets/image8.png";
@@ -144,7 +144,7 @@ function Home() {
     const fetchJudgments = async () => {
       try {
         const response = await fetch(
-          "http://61.246.67.74:4000/api/latest-judgments"
+          "http://localhost:3000/api/latest-judgments"
         );
         const data = await response.json();
         setJudgments(data);
@@ -221,7 +221,7 @@ function Home() {
 
   const fetchCurrentContent = async () => {
     try {
-      const response = await axios.get("http://61.246.67.74:4000/api/marquee");
+      const response = await axios.get("http://localhost:3000/api/marquee");
       if (response.data.success) {
         setCurrentContent(response.data.message);
       }
@@ -277,7 +277,6 @@ function Home() {
       booksWrapper.removeEventListener("mouseleave", startScrolling);
     };
   }, []);
-
   return (
     <div className={styles.home}>
       <div class={styles.marqueecontainer}>

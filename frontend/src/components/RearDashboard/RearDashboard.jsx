@@ -1,11 +1,12 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect,forwardRef, useImperativeHandle } from "react";
 import styles from "./RearDashboard.module.css";
 import JudgmentsTable from "../JudgmentsTable/JudgmentsTable";
 
-function RearDashboard({ results, onRowClick, onSaveToPad, judgmentCount, currentJudgmentCitation, setCurrentJudgmentCitation }) {
+
+const RearDashboard = forwardRef(({ results, onRowClick, onSaveToPad, judgmentCount, onClear, setIsLoading}, ref) => {
   const [showTable, setShowTable] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-  //const [currentJudgmentCitation, setCurrentJudgmentCitation] = useState("");
+  const [currentJudgmentCitation, setCurrentJudgmentCitation] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [filterType, setFilterType] = useState("All");
@@ -15,7 +16,23 @@ function RearDashboard({ results, onRowClick, onSaveToPad, judgmentCount, curren
   const [courtList, setCourtList] = useState([]);
 
 
+  const handleClear = () => {
+    console.log("Clearing child component...");
+    setSelectedRow(null);
+    setFromDate("");
+    setToDate("");
+    setFilterType("All");
+    setCourtType("All");
+    setFilteredResults(results);
+    setSearchQuery("");
+    setCurrentJudgmentCitation("");
+    onClear?.(); // Call parent onClear if defined
+  };
+  useImperativeHandle(ref, () => ({
+    handleClear,
+  }));
 
+  
   const handleShowClick = () => {
     setShowTable(!showTable);
     if (!showTable && selectedRow) {
@@ -24,6 +41,7 @@ function RearDashboard({ results, onRowClick, onSaveToPad, judgmentCount, curren
   };
 
   const handleNextClick = () => {
+    setIsLoading(true);
     const currentIndex = filteredResults.findIndex((row) => row === selectedRow);
     const nextIndex = currentIndex < filteredResults.length - 1 ? currentIndex + 1 : 0;
     const nextRow = filteredResults[nextIndex];
@@ -33,6 +51,7 @@ function RearDashboard({ results, onRowClick, onSaveToPad, judgmentCount, curren
   };
 
   const handlePrevClick = () => {
+    setIsLoading(true);
     const currentIndex = filteredResults.findIndex((row) => row === selectedRow);
     const prevIndex = currentIndex > 0 ? currentIndex - 1 : filteredResults.length - 1;
     const prevRow = filteredResults[prevIndex];
@@ -42,6 +61,7 @@ function RearDashboard({ results, onRowClick, onSaveToPad, judgmentCount, curren
   };
 
   const handleFirstClick = () => {
+    setIsLoading(true);
     const firstRow = filteredResults[0];
     setSelectedRow(firstRow);
     setCurrentJudgmentCitation(firstRow.judgmentCitation);
@@ -49,6 +69,7 @@ function RearDashboard({ results, onRowClick, onSaveToPad, judgmentCount, curren
   };
 
   const handleLastClick = () => {
+    setIsLoading(true);
     const lastRow = filteredResults[filteredResults.length - 1];
     setSelectedRow(lastRow);
     setCurrentJudgmentCitation(lastRow.judgmentCitation);
@@ -74,6 +95,7 @@ const handleSaveToPadClick = () => {
 
 
   const handleRowClick = (judgment) => {
+    setIsLoading(true);
     setSelectedRow(judgment);
     setCurrentJudgmentCitation(judgment.judgmentCitation);
     onRowClick(judgment);
@@ -148,9 +170,11 @@ useEffect(() => {
 
   useEffect(() => {
     if (filteredResults.length > 0) {
-      handleInitialLoad(filteredResults[0]);
+      handleInitialLoad(filteredResults[0]);  // Ensure first row is loaded
+      setShowTable(true);  // Automatically show the table when results are loaded
     }
   }, [filteredResults, handleInitialLoad]);
+  
 
   const handleClearDates = () => {
     setFromDate("");
@@ -159,7 +183,7 @@ useEffect(() => {
 
 const handleSearch = () => {
   const query = searchQuery.toLowerCase();
-  
+
   // Function to normalize date format to search query format (dd/mm/yyyy)
   const formatDateForSearch = (dateString) => {
     // Assuming dateString is in dd/mm/yyyy format
@@ -198,7 +222,7 @@ useEffect(() => {
 useEffect(() => {
   const fetchCourts = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/all-courts`);
+      const response = await fetch(`http://61.246.67.74:4000/api/all-courts`);
       if (!response.ok) {
         throw new Error("Failed to fetch courts");
       }
@@ -216,10 +240,9 @@ useEffect(() => {
 
   return (
     <main className={styles.main}>
-      <div className={styles.rectangle}></div>
-      <header className={styles.header}>
+      <div className={styles.rectangle}>
         <div className={styles.dateRangeSelector}>
-          <label className={styles.dateLabel}>From Date</label>
+          <label className={styles.dateLabel}>From</label>
           <input
             className={styles.dateInput}
             type="date"
@@ -227,7 +250,7 @@ useEffect(() => {
             value={fromDate}
             onChange={(e) => setFromDate(e.target.value)}
           />
-          <span className={styles.toLabel}>To Date</span>
+          <span className={styles.toLabel}>To</span>
           <input
             className={styles.dateInput}
             type="date"
@@ -235,7 +258,7 @@ useEffect(() => {
             value={toDate}
             onChange={(e) => setToDate(e.target.value)}
           />
-          <button className={styles.clearButton} onClick={handleClearDates}>
+          <button className={styles.clearButton} onClick={handleClear}>
             Clear
           </button>
         </div>
@@ -267,29 +290,29 @@ useEffect(() => {
 
 
 
-      </header>
-      <footer className={styles.footer}>
-        <div className={styles.pagination}>
-          <button className={styles.paginationButton} onClick={handleFirstClick}>
-            First
-          </button>
-          <button className={styles.paginationButton} onClick={handlePrevClick}>
-            Prev
-          </button>
-          <span className={styles.paginationInfo}>
-            Judgment {filteredResults.findIndex((row) => row === selectedRow) + 1} of {filteredResults.length}
-          </span>
-          <button className={styles.paginationButton} onClick={handleNextClick}>
-            Next
-          </button>
-          <button className={styles.paginationButton} onClick={handleLastClick}>
-            Last
-          </button>
-        </div>
+     
+<div className={styles.paginationContainer}>
+  <button className={styles.paginationButton} onClick={handleFirstClick}>
+    &#x21E6; {/* Left double arrow for "First" */}
+  </button>
+  <button className={styles.paginationButton} onClick={handlePrevClick}>
+    &#x2190; {/* Left arrow for "Prev" */}
+  </button>
+  <span className={styles.paginationInfo}>
+   {filteredResults.findIndex((row) => row === selectedRow) + 1} of {filteredResults.length}
+  </span>
+  <button className={styles.paginationButton} onClick={handleNextClick}>
+    &#x2192; {/* Right arrow for "Next" */}
+  </button>
+  <button className={styles.paginationButton} onClick={handleLastClick}>
+    &#x21E8; {/* Right double arrow for "Last" */}
+  </button>
+</div>
+
         <div className={styles.caseInfo}>
-          {currentJudgmentCitation}
-        </div>
-        <button className={styles.prevCaseButton}>Prev Case</button>
+  {currentJudgmentCitation ? currentJudgmentCitation : "Judgment Citation"}
+</div>
+
        <div className={styles.searchContainer}>
           <input
             className={styles.searchblock}
@@ -298,12 +321,12 @@ useEffect(() => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button
+          {/*<button
             className={styles.searchButton}
             onClick={() => handleSearch()}
           >
             Search
-          </button>
+          </button>*/}
           </div>
 
         <button className={styles.padButton} onClick={handleSaveToPadClick}>
@@ -312,7 +335,7 @@ useEffect(() => {
         <button className={styles.showButton} onClick={handleShowClick}>
           {showTable ? "Hide" : "Show"}
         </button>
-      </footer>
+      </div>
       {showTable ? (
         <div className={styles.table}>
           {filteredResults.length > 0 ? (
@@ -329,6 +352,6 @@ useEffect(() => {
       ) : null}
     </main>
   );
-}
+})
 
 export default RearDashboard;

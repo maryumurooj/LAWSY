@@ -4,6 +4,8 @@
   background-image: url("../assets/bookcase.jpg");
   background-size: cover;
   position: relative; /* Hide scrollbar for WebKit browsers by default */
+  scroll-snap-type: y mandatory; /* Enable vertical snap scrolling */
+  scroll-behavior: smooth; /* Smooth scrolling */
   &::-webkit-scrollbar {
     width: 7px;
     background-color: transparent; /* Makes scrollbar background transparent */
@@ -21,18 +23,10 @@
     ); /* Visible on hover with transparency */
   }
 }
-
-.reducedWelcome {
-  font-size: 30px; /* Adjust the font size as needed */
-  position: fixed; /* Keep the welcome phrase fixed at the top */
-  top: 0; /* Stick to the top of the viewport */
-  left: 0; /* Align to the left (adjust as needed) */
-  width: 100%; /* Take full width (adjust as needed) */
-  text-align: center; /* Center the text (adjust as needed) */
-  z-index: 1000; /* Ensure it's on top of other elements */
-  background-color: #fff; /* Add a background color to maintain readability (optional) */
-  padding: 10px; /* Add some padding for better readability (optional) */
+.section2, .section3 {
+  scroll-snap-align: end; /* Snap to the start of the section */
 }
+
 
 .layer1 {
   position: absolute;
@@ -68,7 +62,7 @@
   padding: 0;
 }
 .section2 {
-  height: max-content;
+  max-height: calc(100dvh - 11vh);
   padding: 5%;
   position: relative;
   transition: transform 0.6s ease-in-out;
@@ -80,7 +74,6 @@
     display: flex;
     height: 75vh;
     gap: 10px;
-    padding: 30px;
     align-items: stretch;
     position: relative;
     transition: transform 0.6s ease-in-out;
@@ -103,11 +96,10 @@
   flex-direction: column;
   flex: 1; /* Allow RightCol to grow and shrink */
   gap:10px;
-  max-width: 50%;
   justify-content: space-between;
   height: inherit;
+  max-width: 40%;
 } /* Boxes */
-.box1,
 .box2,
 .box3,
 .box4 {
@@ -294,7 +286,7 @@
     line-height: 1.5; /* Adjust line height for better readability */
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3; /* Fallback for modern browsers */
+   
 
   }
   button{
@@ -311,7 +303,6 @@
     background-color: red;
   }
   }
-.box1:hover,
 .box2:hover,
 .box3:hover,
 .box4:hover {
@@ -367,9 +358,10 @@
 .section3 {
   display: flex;
   gap: 10px;
-  padding: 10%;
-  margin-top: 20px;
-  max-height: calc(100dvh - 11vh);
+  min-height: calc(100dvh - 11dvh);
+  align-items: center;
+  justify-content: center;
+  padding: 0 10%;
   position: relative;
   transition: transform 2s ease-in-out;
   color: whitesmoke;
@@ -377,8 +369,8 @@
   overflow: hidden;
 }
 
-.box6:hover,
-.box5:hover {
+.box6:hover
+{
   transform: scale(1.005);
   filter: brightness(1.5);
   border: 1px solid rgba(255, 255, 255, 0.389);
@@ -401,26 +393,14 @@
   animation: rotate 20s linear infinite;
   transform-origin: 13px 25px;
 }
-.intop {
-  animation: rotate 10s linear infinite;
-  transform-origin: 13px 25px;
-}
-.outbottom {
-  animation: rotate 25s linear infinite;
-  transform-origin: 84px 93px;
-}
-.inbottom {
-  animation: rotate 15s linear infinite;
-  transform-origin: 84px 93px;
-}
-
 .box6 {
   display: flex;
   flex-direction: column;
   justify-content: center;
   
   min-width: 50dvw;
-  max-height: fit-content;
+  min-height: fit-content;
+  padding: 2% 0;
   filter: opacity(0.9);
   transition: transform 0.2s ease;
   background: rgba(255, 255, 255, 0.23);
@@ -553,17 +533,16 @@
     flex-direction: column;
     height: auto;
     padding: 10px;
+
   }
   .LeftCol,
   .RightCol {
     width: 100%;
     height: auto;
   }
-  .box1,
   .box2,
   .box3,
   .box4,
-  .box5,
   .box6 {
     min-height: 20vh;
     padding: 10px;

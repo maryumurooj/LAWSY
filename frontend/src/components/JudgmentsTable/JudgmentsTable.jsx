@@ -3,27 +3,13 @@ import PropTypes from 'prop-types';
 import { Table } from 'reactstrap';
 import styles from './JudgmentsTable.module.css';
 
-const JudgmentsTable = ({ judgmentData, onRowClick, selectedRow, court, fromDate, toDate }) => {
+const JudgmentsTable = ({ judgmentData, onRowClick, selectedRow }) => {
     const [sortedData, setSortedData] = useState(judgmentData);
     const [sortDirection, setSortDirection] = useState('desc');
 
     useEffect(() => {
-        const filterData = () => {
-            return judgmentData.filter(judgment => {
-                const judgmentDate = judgment.judgmentDOJ; // assuming judgmentDOJ is in YYYYMMDD format
-                const formattedJudgmentDate = `${judgmentDate.slice(4, 8)}-${judgmentDate.slice(2, 4)}-${judgmentDate.slice(0, 2)}`;
-                const judgmentDateObj = new Date(formattedJudgmentDate);
-                const fromDateObj = fromDate ? new Date(fromDate) : new Date('1900-01-01');
-                const toDateObj = toDate ? new Date(toDate) : new Date();
-
-                return (!court || judgment.courtName === court) &&
-                    (!fromDate || judgmentDateObj >= fromDateObj) &&
-                    (!toDate || judgmentDateObj <= toDateObj);
-            });
-        };
-
-        setSortedData(filterData());
-    }, [judgmentData, court, fromDate, toDate]);
+        setSortedData(judgmentData);
+    }, [judgmentData]);
 
     const handleSort = () => {
         const direction = sortDirection === 'desc' ? 'asc' : 'desc';
@@ -59,8 +45,9 @@ const JudgmentsTable = ({ judgmentData, onRowClick, selectedRow, court, fromDate
             <Table striped bordered hover className={styles.table}>
                 <thead>
                     <tr>
+                        <th className={styles.customTh} style={{ cursor: 'pointer' }}>S.No.</th>
                         <th className={styles.customTh} onClick={handleSort} style={{ cursor: 'pointer' }}>
-                            Date of Judgment {sortDirection === 'asc' ? '↑' : '↓'}
+                            DOJ {sortDirection === 'asc' ? '↑' : '↓'}
                         </th>
                         <th className={styles.customTh} onClick={handleSort} style={{ cursor: 'pointer' }}>
                             Citation {sortDirection === 'asc' ? '↑' : '↓'}
@@ -77,15 +64,16 @@ const JudgmentsTable = ({ judgmentData, onRowClick, selectedRow, court, fromDate
                                 className={`${styles.customTr} ${selectedRow === judgment ? styles.clicked : ''}`}
                                 onClick={() => handleRowClick(judgment)}
                             >
+                                <td className={styles.customTd}>{index + 1}</td> {/* Serial number */}
                                 <td className={styles.customTd}>{formatDate(judgment.judgmentDOJ)}</td>
-                                <td className={styles.customTd}>{judgment.judgmentCitation}</td>
+                                <td className={`${styles.customTd} ${styles.citationColumn}`}>{judgment.judgmentCitation}</td>
                                 <td className={styles.customTd}>{judgment.judgmentParties}</td>
-                                <td className={styles.customTd}>{judgment.courtName}</td>
-                            </tr>
+                                <td className={`${styles.customTd} ${styles.courtColumn}`}>{judgment.courtName}</td>
+                                </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="4">No results found</td>
+                            <td colSpan="5">No results found</td>
                         </tr>
                     )}
                 </tbody>
@@ -98,9 +86,6 @@ JudgmentsTable.propTypes = {
     judgmentData: PropTypes.array.isRequired,
     onRowClick: PropTypes.func.isRequired,
     selectedRow: PropTypes.object, // PropType for selectedRow
-    court: PropTypes.string, // PropType for court
-    fromDate: PropTypes.string, // PropType for fromDate
-    toDate: PropTypes.string // PropType for toDate
 };
 
 export default JudgmentsTable;

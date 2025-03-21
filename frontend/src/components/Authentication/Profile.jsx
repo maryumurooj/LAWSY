@@ -12,6 +12,7 @@ import {
 import { updateEmail, updatePassword, updateProfile } from "firebase/auth";
 import { useAuth } from "../../services/AuthContext";
 import styles from "./Profile.module.css"; // Importing module CSS
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 const Profile = () => {
   const { user, subscriptionStatus } = useAuth();
@@ -49,6 +50,11 @@ const Profile = () => {
   const [state, setState] = useState(billingAddress.state);
   const [pincode, setPincode] = useState(billingAddress.pincode);
   const [fullAddress, setFullAddress] = useState(billingAddress.fullAddress);
+  const [firstName, setFirstName] = useState(billingAddress.firstName || "");
+const [lastName, setLastName] = useState(billingAddress.lastName || "");
+const [payment, setPayment] = useState(billingAddress.payment || "");
+const [paymentMethod, setPaymentMethod] = useState(billingAddress.paymentMethod || "");
+const [representative, setRepresentative] = useState(billingAddress.representative || "");
 
   // Fetch user subscription in real-time using onSnapshot
   useEffect(() => {
@@ -109,12 +115,25 @@ const Profile = () => {
     return () => unsubscribeBilling();
   }, [user]);
 
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   // Photo URL
   useEffect(() => {
+    setProfilePic(<AccountBoxIcon />);
     if (user?.photoURL) {
-      setProfilePic(user.photoURL);
+      const img = new Image();
+      img.src = user.photoURL;
+      img.onload = () => {
+        setImageLoaded(true);
+        setProfilePic(user.photoURL);
+      };
+      img.onerror = () => {
+        setImageLoaded(false);
+        setProfilePic(<AccountBoxIcon />);
+      };
     } else {
-      setProfilePic("https://via.placeholder.com/150?text=👤");
+      setImageLoaded(false);
+      setProfilePic(<AccountBoxIcon />);
     }
   }, [user]);
 
@@ -174,14 +193,16 @@ const Profile = () => {
       const billingDocRef = doc(db, "billing", user.uid);
 
       await updateDoc(billingDocRef, {
-        phone,
-        alternatePhone,
-        email: bemail, // Using `bemail` to differentiate from the account email
         district,
-        city,
-        state,
-        pincode,
-        fullAddress,
+      city,
+      state,
+      pincode,
+      fullAddress,
+      firstName,
+      lastName,
+      payment,
+      paymentMethod,
+      representative,
       });
 
       alert("Billing address updated successfully!");
@@ -200,8 +221,8 @@ const Profile = () => {
       <div className={styles.leftColumn}>
         <div className={styles.detailscard}>
           <div className={styles.wrapper}>
-            <img src={profilePic} alt="Profile" className={styles.profilePic} />
-
+            {!imageLoaded && <AccountBoxIcon sx={{ fontSize: 80 }} className={styles.profilePicture} />}
+            {imageLoaded && <img src={profilePic} alt="Profile" className={styles.profilePic}/>}
             <h2 className={styles.username}>{username}</h2>
             <table className={styles.table}>
               <tbody>
@@ -262,132 +283,165 @@ const Profile = () => {
             <table className={styles.table}>
               {isEditingBilling ? (
                 <tbody>
-                  <tr>
-                    <td className={styles.label}>
-                      <strong>Phone:</strong>
-                    </td>
-                    <td className={styles.value}>
-                      <input
-                        type="text"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className={styles.input}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className={styles.label}>
-                      <strong>Alternate Phone:</strong>
-                    </td>
-                    <td className={styles.value}>
-                      <input
-                        type="text"
-                        value={alternatePhone}
-                        onChange={(e) => setAlternatePhone(e.target.value)}
-                        className={styles.input}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className={styles.label}>
-                      <strong>Email:</strong>
-                    </td>
-                    <td className={styles.value}>
-                      <input
-                        type="email"
-                        value={bemail}
-                        onChange={(e) => setbEmail(e.target.value)}
-                        className={styles.input}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className={styles.label}>
-                      <strong>District:</strong>
-                    </td>
-                    <td className={styles.value}>
-                      <input
-                        type="text"
-                        value={district}
-                        onChange={(e) => setDistrict(e.target.value)}
-                        className={styles.input}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className={styles.label}>
-                      <strong>City:</strong>
-                    </td>
-                    <td className={styles.value}>
-                      <input
-                        type="text"
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                        className={styles.input}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className={styles.label}>
-                      <strong>State:</strong>
-                    </td>
-                    <td className={styles.value}>
-                      <input
-                        type="text"
-                        value={state}
-                        onChange={(e) => setState(e.target.value)}
-                        className={styles.input}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className={styles.label}>
-                      <strong>Pincode:</strong>
-                    </td>
-                    <td className={styles.value}>
-                      <input
-                        type="text"
-                        value={pincode}
-                        onChange={(e) => setPincode(e.target.value)}
-                        className={styles.input}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
+                 <tr>
+        <td className={styles.label}>
+          <strong>First Name:</strong>
+        </td>
+        <td className={styles.value}>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className={styles.input}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td className={styles.label}>
+          <strong>Last Name:</strong>
+        </td>
+        <td className={styles.value}>
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className={styles.input}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td className={styles.label}>
+          <strong>Full Address:</strong>
+        </td>
+        <td className={styles.value}>
+          <textarea
+            value={fullAddress}
+            onChange={(e) => setFullAddress(e.target.value)}
+            className={styles.input}
+          />
+        </td>
+      </tr>
+      
+      <tr>
+        <td className={styles.label}>
+          <strong>District:</strong>
+        </td>
+        <td className={styles.value}>
+          <input
+            type="text"
+            value={district}
+            onChange={(e) => setDistrict(e.target.value)}
+            className={styles.input}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td className={styles.label}>
+          <strong>City:</strong>
+        </td>
+        <td className={styles.value}>
+          <input
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className={styles.input}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td className={styles.label}>
+          <strong>State:</strong>
+        </td>
+        <td className={styles.value}>
+          <input
+            type="text"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            className={styles.input}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td className={styles.label}>
+          <strong>Pincode:</strong>
+        </td>
+        <td className={styles.value}>
+          <input
+            type="text"
+            value={pincode}
+            onChange={(e) => setPincode(e.target.value)}
+            className={styles.input}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td className={styles.label}>
+          <strong>Phone:</strong>
+        </td>
+        <td className={styles.value}>
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className={styles.input}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td className={styles.label}>
+          <strong>Alternate Phone:</strong>
+        </td>
+        <td className={styles.value}>
+          <input
+            type="text"
+            value={alternatePhone}
+            onChange={(e) => setAlternatePhone(e.target.value)}
+            className={styles.input}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td className={styles.label}>
+          <strong>Email:</strong>
+        </td>
+        <td className={styles.value}>
+          <input
+            type="email"
+            value={bemail}
+            onChange={(e) => setbEmail(e.target.value)}
+            className={styles.input}
+          />
+        </td>
+      </tr>
+      
+      
+     
+      
+
+                </tbody>
+              ) : (
+                <tbody>
+                   <tr>
+    <td className={styles.label}>
+      <strong>First Name:</strong>
+    </td>
+    <td className={styles.value}>{billingAddress.firstName}</td>
+  </tr>
+  <tr>
+    <td className={styles.label}>
+      <strong>Last Name:</strong>
+    </td>
+    <td className={styles.value}>{billingAddress.lastName}</td>
+  </tr>
+  <tr>
                     <td className={styles.label}>
                       <strong>Full Address:</strong>
                     </td>
                     <td className={styles.value}>
-                      <textarea
-                        value={fullAddress}
-                        onChange={(e) => setFullAddress(e.target.value)}
-                        className={styles.input}
-                      />
+                      {billingAddress.fullAddress}
                     </td>
                   </tr>
-                </tbody>
-              ) : (
-                <tbody>
-                  <tr>
-                    <td className={styles.label}>
-                      <strong>Phone:</strong>
-                    </td>
-                    <td className={styles.value}>{billingAddress.phone}</td>
-                  </tr>
-                  <tr>
-                    <td className={styles.label}>
-                      <strong>Alternate Phone:</strong>
-                    </td>
-                    <td className={styles.value}>
-                      {billingAddress.alternatePhone || "N/A"}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className={styles.label}>
-                      <strong>Email:</strong>
-                    </td>
-                    <td className={styles.value}>{billingAddress.email}</td>
-                  </tr>
+
                   <tr>
                     <td className={styles.label}>
                       <strong>District:</strong>
@@ -414,12 +468,25 @@ const Profile = () => {
                   </tr>
                   <tr>
                     <td className={styles.label}>
-                      <strong>Full Address:</strong>
+                      <strong>Phone:</strong>
+                    </td>
+                    <td className={styles.value}>{billingAddress.phone}</td>
+                  </tr>
+                  <tr>
+                    <td className={styles.label}>
+                      <strong>Alternate Phone:</strong>
                     </td>
                     <td className={styles.value}>
-                      {billingAddress.fullAddress}
+                      {billingAddress.alternatePhone || "N/A"}
                     </td>
                   </tr>
+                  <tr>
+                    <td className={styles.label}>
+                      <strong>Email:</strong>
+                    </td>
+                    <td className={styles.value}>{billingAddress.email}</td>
+                  </tr>
+                  
                 </tbody>
               )}
             </table>

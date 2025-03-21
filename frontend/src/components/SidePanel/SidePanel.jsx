@@ -293,62 +293,110 @@ const handleEquivalentSearch = async (selectedEqual) => {
 
 //fetching DropDowns
 
-//Caseno
-const fetchCaseNo = async () => {
-  try {
-    const response = await fetch("http://localhost:3000/api/all-caseno");
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const data = await response.json();
-    setCaseNos(data);
-     console.log(' fetched:', data);
-  } catch (error) {
-    console.error("Error fetching CaseNo:", error);
-  }
-};
 useEffect(() => {
-  fetchCaseNo();
-}, []);
-
-useEffect(() => {
-  let filtered = [...caseNos];
-  if (typeof caseInfo === 'string') {
-    filtered = filtered.filter((caseNo) =>
-      caseNo.judgmentNoText.toLowerCase().includes(caseInfo.toLowerCase())
-    );
-  }
-  if (typeof caseYear === 'string') {
-    filtered = filtered.filter((caseNo) =>
-      caseNo.judgmentNoText.toLowerCase().includes(caseYear.toLowerCase())
-    );
-  }
-  if (typeof caseNumber === 'string') {
-    filtered = filtered.filter((caseNo) =>
-      caseNo.judgmentNoText.toLowerCase().includes(caseNumber.toLowerCase())
-    );
-  }
-  setFilteredCaseNos(filtered);
-}, [caseInfo, caseYear, caseNumber, caseNos]);
-
-//Citation List
-useEffect(() => {
-  const fetchCitation = async () => {
+  const fetchDropdownData = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/all-citation`);
+      const response = await fetch("http://localhost:3000/api/dropdown-data");
       if (!response.ok) {
-        throw new Error("Failed to fetch Citation");
+        throw new Error("Failed to fetch dropdown data");
       }
       const data = await response.json();
-      setCitations(data);console.log("Citation fetched:", data);
+
+      // Set all dropdown data
+      setLegislationNames(data.legislationNames);
+      setTopics(data.topics);
+      setJudges(data.judges);
+      setAdvocates(data.advocates);
+      setNominals(data.nominals);
+      setCaseNos(data.caseNos);
+      setCitations(data.citations);
+      setEquivalents(data.equivalents);
     } catch (error) {
-      console.error("Error fetching Citation:", error);
+      console.error("Error fetching dropdown data:", error);
     }
   };
-  fetchCitation();
+
+  fetchDropdownData();
 }, []);
 
+  // Section Fetching
+  const fetchSections = async (legislationId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/sections?legislationId=${legislationId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch sections');
+      }
+      const data = await response.json();
+      setSections(data);
+    } catch (error) {
+      console.error('Error fetching sections:', error);
+    }
+  };
 
+  // SubSection Fetching
+const fetchSubsections = async (legislationSectionId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/subsections?legislationSectionId=${legislationSectionId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch subsections');
+      }
+      const data = await response.json();
+      setSubsections(data);
+    } catch (error) {
+      console.error('Error fetching subsections:', error);
+    }
+  };  
+
+// ACT handling 
+const handleLegislationChange = (e) => {
+  const selectedLegislation = e.target.value;
+  setLegislationName(selectedLegislation);
+
+  // Find the selected legislation object based on legislationName
+  const selectedLegislationObj = legislationNames.find(leg => leg.legislationName === selectedLegislation);
+  if (selectedLegislationObj) {
+    fetchSections(selectedLegislationObj.legislationId);
+  }
+};
+
+// Section Handling with Combination
+const handleSectionChange = (e) => {
+  const selectedSection = e.target.value;
+  setSection(selectedSection);
+
+  // Find the selected section object based on legislationSectionCombined
+  const selectedSectionObj = sections.find(sec => sec.legislationSectionCombined === selectedSection);
+
+  if (selectedSectionObj) {
+    fetchSubsections(selectedSectionObj.legislationSectionId);
+  }
+};
+
+
+const handleEqualSelect = (selectedEqual) => {
+handleEquivalentSearch(selectedEqual);
+};
+
+
+useEffect(() => {
+  let filtered = [...equivalents];
+  if (typeof year === 'string' && year.trim() !== '') {
+    filtered = filtered.filter((equivalent) =>
+      equivalent.judgmentYear && equivalent.judgmentYear.toLowerCase().includes(year.toLowerCase())
+    );
+  }
+  if (publicationName && publicationName !== 'ALL') {
+    filtered = filtered.filter((equivalent) =>
+      equivalent.judgmentPublication && equivalent.judgmentPublication.toLowerCase() === publicationName.toLowerCase()
+    );
+  }
+  if (typeof pageNo === 'string' && pageNo.trim() !== '') {
+    filtered = filtered.filter((equivalent) =>
+      equivalent.judgmentPage && equivalent.judgmentPage.toString().includes(pageNo)
+    );
+  }
+  setFilteredEquivalents(filtered);
+}, [year, publicationName, pageNo, equivalents]);
 
 
 
@@ -403,7 +451,25 @@ useEffect(() => {
   }
 }, [fullCitation, handleCitationSearch]);
 
-
+useEffect(() => {
+  let filtered = [...caseNos];
+  if (typeof caseInfo === 'string') {
+    filtered = filtered.filter((caseNo) =>
+      caseNo.judgmentNoText.toLowerCase().includes(caseInfo.toLowerCase())
+    );
+  }
+  if (typeof caseYear === 'string') {
+    filtered = filtered.filter((caseNo) =>
+      caseNo.judgmentNoText.toLowerCase().includes(caseYear.toLowerCase())
+    );
+  }
+  if (typeof caseNumber === 'string') {
+    filtered = filtered.filter((caseNo) =>
+      caseNo.judgmentNoText.toLowerCase().includes(caseNumber.toLowerCase())
+    );
+  }
+  setFilteredCaseNos(filtered);
+}, [caseInfo, caseYear, caseNumber, caseNos]);
 //this was the function which was used to search citation through input field itself
 {/* 
 const handleFullCitationChange = (e) => {
@@ -415,194 +481,7 @@ const handleCitationSelect = (selectedCitation) => {
   handleCitationSearch(selectedCitation);
 };
 
-//Equals
-useEffect(() => {
-  const fetchEquivalent = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/all-equivalent`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch Equivalent");
-      }
-      const data = await response.json();
-      setEquivalents(data);
-      console.log("Equivalent fetched:", data);
-    } catch (error) {
-      console.error("Error fetching Equivalent:", error);
-    }
-  };
-  fetchEquivalent();
-}, []);
 
-const handleEqualSelect = (selectedEqual) => {
-  handleEquivalentSearch(selectedEqual);
-};
-
-
-useEffect(() => {
-    let filtered = [...equivalents];
-    if (typeof year === 'string' && year.trim() !== '') {
-      filtered = filtered.filter((equivalent) =>
-        equivalent.judgmentYear && equivalent.judgmentYear.toLowerCase().includes(year.toLowerCase())
-      );
-    }
-    if (publicationName && publicationName !== 'ALL') {
-      filtered = filtered.filter((equivalent) =>
-        equivalent.judgmentPublication && equivalent.judgmentPublication.toLowerCase() === publicationName.toLowerCase()
-      );
-    }
-    if (typeof pageNo === 'string' && pageNo.trim() !== '') {
-      filtered = filtered.filter((equivalent) =>
-        equivalent.judgmentPage && equivalent.judgmentPage.toString().includes(pageNo)
-      );
-    }
-    setFilteredEquivalents(filtered);
-  }, [year, publicationName, pageNo, equivalents]);
-
-
-
-// Act(Legislation Name) DropDown
-useEffect(() => {
-  const fetchLegislationNames = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/all-legislation`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch legislation names');
-      }
-      const data = await response.json();
-      setLegislationNames(data);
-    } catch (error) {
-      console.error('Error fetching legislation names:', error);
-    }
-  };
-  // Fetch legislation names when component mounts
-  fetchLegislationNames();
-}, []);
-
-  // Section Fetching
-  const fetchSections = async (legislationId) => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/sections?legislationId=${legislationId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch sections');
-      }
-      const data = await response.json();
-      setSections(data);
-    } catch (error) {
-      console.error('Error fetching sections:', error);
-    }
-  };
-
-  // SubSection Fetching
-  const fetchSubsections = async (legislationSectionId) => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/subsections?legislationSectionId=${legislationSectionId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch subsections');
-      }
-      const data = await response.json();
-      setSubsections(data);
-    } catch (error) {
-      console.error('Error fetching subsections:', error);
-    }
-  };
-  
-  // ACT handling 
-  const handleLegislationChange = (e) => {
-    const selectedLegislation = e.target.value;
-    setLegislationName(selectedLegislation);
-  
-    // Find the selected legislation object based on legislationName
-    const selectedLegislationObj = legislationNames.find(leg => leg.legislationName === selectedLegislation);
-    if (selectedLegislationObj) {
-      fetchSections(selectedLegislationObj.legislationId);
-    }
-  };
-  
-  // Section Handling with Combination
-  const handleSectionChange = (e) => {
-    const selectedSection = e.target.value;
-    setSection(selectedSection);
-  
-    // Find the selected section object based on legislationSectionCombined
-    const selectedSectionObj = sections.find(sec => sec.legislationSectionCombined === selectedSection);
-  
-    if (selectedSectionObj) {
-      fetchSubsections(selectedSectionObj.legislationSectionId);
-    }
-  };
-
-//Judges DropDown
-useEffect(() => {
-  const fetchJudges = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/all-judge`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch judges');
-      }
-      const data = await response.json();
-      setJudges(data);
-      console.log('Judges fetched:', data); // Log data
-    } catch (error) {
-      console.error('Error fetching judges:', error);
-    }
-  };
-  fetchJudges();
-}, []);
-
-//topics DropDown
-useEffect(() => {
-  const fetchTopics = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/all-topic`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch topics");
-      }
-      const data = await response.json();
-      setTopics(data);
-      console.log("Topics fetched:", data);
-    } catch (error) {
-      console.error("Error fetching topics:", error);
-    }
-  };
-  fetchTopics();
-}, []);
-
-//Advocates DropDown
-useEffect(() => {
-  const fetchAdvocates = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/all-advocate`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch advocates");
-      }
-      const data = await response.json();
-      setAdvocates(data);
-      console.log("Advocates fetched:", data); // Log data
-    } catch (error) {
-      console.error("Error fetching advocates:", error);
-    }
-  };
-  fetchAdvocates();
-}, []);
-
-//Nominal DropDown
-useEffect(() => {
-  const fetchNominal = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/all-nominal`);
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch topics");
-      }
-      const data = await response.json();
-      setNominals(data);console.log("Nominals fetched:", data);
-    } catch (error) {
-      console.error("Error fetching Nominal:", error);
-    }
-  };
-
-  fetchNominal();
-}, []);
 
 const handleClear = () => {
   console.log('Handle clear called');

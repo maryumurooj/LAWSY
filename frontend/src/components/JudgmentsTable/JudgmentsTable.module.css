@@ -1,17 +1,26 @@
+/* Base styles (for smaller screens) */
+.tableContainer{
+    min-width: fit-content;
+}
 .customTh,
 .customTd {
     border: 1px solid black;
-    padding: 10px;
+    padding: 8px;
 }
 
 .customTh {
-    font-size: 14px;
+    font-size: 0.875rem; /* 14px */
     font-weight: bold;
     text-align: center;
     position: sticky;
     top: 0;
-    background-color: #f0f0f0; /* Background color for sticky row */
-    z-index: 2; /* Ensure it's above other rows */
+    background-color: #f0f0f0;
+    z-index: 2;
+}
+
+.customTh.citation, 
+.customTh.court {
+    width: 150px;
 }
 
 .customTr {
@@ -31,6 +40,98 @@
 .customTd {
     color: rgb(0, 0, 0);
     border: 1px solid black;
-    padding: 10px; /* Adjust padding as per your design */
-    font-size: 12px;
+    padding: 8px;
+    font-size: 0.75rem; /* 12px */
+}
+
+.courtColumn,
+.citationColumn {
+    width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Medium screens (14-15 inch, typically 1366x768) */
+@media screen and (min-width: 1366px) {
+    .customTh,
+    .customTd {
+        padding: 10px;
+    }
+
+    .customTh {
+        font-size: 1rem; /* 16px */
+    }
+
+    .customTh.citation, 
+    .customTh.court {
+        width: 180px;
+    }
+
+    .customTd {
+        font-size: 0.875rem; /* 14px */
+    }
+
+    .courtColumn,
+    .citationColumn {
+        width: 150px;
+    }
+}
+
+/* Large screens (17 inch, typically 1920x1080) */
+@media screen and (min-width: 1920px) {
+    .customTh,
+    .customTd {
+        padding: 12px;
+    }
+
+    .customTh {
+        font-size: 1.125rem; /* 18px */
+    }
+
+    .customTh.citation, 
+    .customTh.court {
+        width: 220px;
+    }
+
+    .customTd {
+        font-size: 1rem; /* 16px */
+    }
+
+    .courtColumn,
+    .citationColumn {
+        width: 200px;
+    }
+}
+
+/* Extra large screens (19+ inch, typically 2560x1440 and above) */
+@media screen and (min-width: 2560px) {
+    .customTh,
+    .customTd {
+        padding: 14px;
+    }
+
+    .customTh {
+        font-size: 1.25rem; /* 20px */
+    }
+
+    .customTh.citation, 
+    .customTh.court {
+        width: 250px;
+    }
+
+    .customTd {
+        font-size: 1.125rem; /* 18px */
+    }
+
+    .courtColumn,
+    .citationColumn {
+        width: 230px;
+    }
+}
+
+/* Optional: Add max-width to table container for very large screens */
+.tableContainer {
+    min-width: fit-content;
+    margin: 0 auto;
 }

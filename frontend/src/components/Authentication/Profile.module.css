@@ -45,6 +45,7 @@
   display: block;
 }
 
+
 @media (min-width: 768px) {
   .profilePic {
     width: 100px;
@@ -191,7 +192,7 @@ h3 {
   font-size: 14px;
   font-weight: 500;
   color: #111827;
-  text-align: right;
+  text-align: left;
   background-color: #fff;
   border-bottom: 1px solid #e5e7eb;
   word-break: break-word;
@@ -230,6 +231,10 @@ h3 {
 }
 
 .wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 15px;
   max-width: 100%;
   overflow-x: hidden;
